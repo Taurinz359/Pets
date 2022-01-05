@@ -1,0 +1,20 @@
+{
+    "name": "taurinz/pets",
+    "autoload": {
+        "psr-4": {
+            "Taurinz\\Pets\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Taurinz359",
+            "email": "taurinz359@gmail.com"
+        }
+    ],
+    "require": {
+        "slim/slim": "4.*",
+        "nyholm/psr7": "^1.4",
+        "nyholm/psr7-server": "^1.0",
+        "ext-http": "*"
+    }
+}
