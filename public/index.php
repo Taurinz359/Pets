@@ -6,9 +6,10 @@ use Slim\Factory\AppFactory;
 
 $app = AppFactory::create();
 
-$app ->get('/', function (Request $request, Response $response, $args){
-    $response->getBody()->write("Hello world!");
-    return $response;
-});
+$middleware = require __DIR__ . '/../config/middleware.php';
+$middleware($app);
+
+$routes= require_once __DIR__ .'/../config/routes.php';
+$routes($app);
 
 $app->run();

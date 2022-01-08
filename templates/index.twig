@@ -1,0 +1,19 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+
+    <div>
+        <h1>User Info</h1>
+        {% if user %}
+            <ul>
+                {% for key, value in user %}
+
+                    <li>{{ key }}: {{ value }}</li>
+
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Hello dsd!</p>
+        {% endif %}
+    </div>
+{% endblock %}
