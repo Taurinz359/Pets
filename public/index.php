@@ -1,14 +1,18 @@
 <?php
+
 require_once __DIR__ . '/../vendor/autoload.php';
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+
 use Slim\Factory\AppFactory;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
 $app = AppFactory::create();
 
-$app ->get('/', function (Request $request, Response $response, $args){
-    $response->getBody()->write("Hello world!");
-    return $response;
+$app->add(function (Request $request, RequestHandler $handler){
+    return$handler->handle($request);
 });
+//$app->addErrorMiddleware(false,false,true);
+//
+//$app ->get('/', [HomeController::class, 'preview']);
 
 $app->run();

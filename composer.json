@@ -2,7 +2,7 @@
     "name": "taurinz/pets",
     "autoload": {
         "psr-4": {
-            "Taurinz\\Pets\\": "src/"
+            "App\\": "src/"
         }
     },
     "authors": [
