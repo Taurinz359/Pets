@@ -1,8 +1,9 @@
 <?php
 
-use App\Controllers\HomeController as HomeController;
 use Slim\App;
+use App\Controllers\HomeController;
 
 return function (App $app){
     $app->get('/',[HomeController::class,'index']);
+
 };
