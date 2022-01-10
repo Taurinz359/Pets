@@ -1,18 +1,26 @@
-version: '3.7'
-
-volumes:
-    logs:
-        driver: local
+version: '3.3'
 
 services:
-    slim:
-        image: php:8-alpine
-        working_dir: /var/www
-        command: php -S 0.0.0.0:8080 -t public
-        environment:
-            docker: "true"
-        ports:
-            - 8080:8080
+    app:
+        image: webdevops/php-nginx:8.1
         volumes:
-            - .:/var/www
-            - logs:/var/www/logss
+            - ./:/app
+        working_dir: /app
+        environment:
+            WEB_DOCUMENT_ROOT: /app/public
+        ports:
+            - "8080:80"
+
+    database:
+        image: postgres:13-alpine
+        volumes:
+            - db-data:/var/lib/postgresql/data
+        environment:
+            POSTGRES_PASSWORD: 'password'
+            POSTGRES_USER: 'application'
+            POSTGRES_DB: 'application'
+        ports:
+            - "8033:5432"
+
+volumes:
+    db-data:
