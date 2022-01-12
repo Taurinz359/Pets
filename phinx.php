@@ -15,7 +15,7 @@ return
             'name' => 'postgres',
             'user' => 'application',
             'pass' => 'password',
-            'port' => '8033',
+            'port' => 8033,
             'charset' => 'utf8',
         ],
     ],
