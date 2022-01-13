@@ -9,7 +9,7 @@ services:
         environment:
             WEB_DOCUMENT_ROOT: /app/public
         ports:
-            - "8080:80"
+            - "1234:80"
 
     database:
         image: postgres:13-alpine
