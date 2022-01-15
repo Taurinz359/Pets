@@ -2,8 +2,6 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Illuminate\Database\Capsule\Manager as Manager;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
 
 $app = AppFactory::create();
@@ -21,5 +19,11 @@ $capsule = new Manager();
 $capsule->addConnection($container->get('db'));
 $capsule->setAsGlobal();
 $capsule->bootEloquent();
+
+$container->set([
+    \App\Controllers\HomeController::class =>  function (\Psr\Container\ContainerInterface $c) {
+        return new \App\Controllers\Controller($c);
+    }
+]);
 
 $app->run();

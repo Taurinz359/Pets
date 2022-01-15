@@ -12,6 +12,7 @@ class Validator
 
     public function hasFailed()
     {
-//        todo return bool has mistakes?
+
+//        todo return bool has mistakes
     }
 }
