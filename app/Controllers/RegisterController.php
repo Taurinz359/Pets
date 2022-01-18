@@ -2,45 +2,31 @@
 
 namespace App\Controllers;
 
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Slim\App;
-use Slim\Factory\AppFactory;
+use App\Validation\Validator;
+use Psr\Http\Message\ResponseInterface as ResponseInterface;
+use Respect\Validation\Validator as v;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Slim\Views\Twig;
 
-class RegisterController
+
+class RegisterController extends Controller
 {
-    private array $_valid = [
-        'emailValid' => "is-invalid",
-        'emailValidMessage' => "It isn't email",
-        'passValid' => "is-invalid",
-        'passInvalidMessage' => "Password is incorrect",
-        'rout' => "/home"
-    ];
-
-    public function checkEmail(Request $request, Response $response): Response
+    function checkValidate(Request $request, Response $response): ResponseInterface
     {
-        $container = require __DIR__ . '/../Validation/Validator.php';
-
-        $check = true;
-        if (true === $check) {
-            return  $response->withHeader('Location' ,'/home', )->withStatus(302);
-        }
-        return Twig::fromRequest($request)->render(
-            $response,
-            'home.twig',
-            ['user' => $request->getParsedBody(), 'valid' => $this->_valid
-            ]
-        );
-    }
-
-    public function test(Request $request, Response $response)
-    {
-        return Twig::fromRequest($request)->render(
-            $response,
-            'home.twig',
-            ['user' => $request->getParsedBody(), 'valid' => $this->_valid
-            ]
-        );
+        $validator = $this->getValidator();
+        $requestData = $request->getParsedBody();
+        $validator->validate($requestData, [
+            'email' => v::email()->setTemplate('Ты че хуила? Ты че удумал:?'),
+            'password' =>  v::length(3, 30),
+            'password-check' => v::length(3, 30)->equals($requestData['password'])->setTemplate('В глаза долбишься?'),
+        ]);
+//        if($validator->hasFailed()){
+            return Twig::fromRequest($request)->render(
+                $response,
+                'register.twig',
+                ['errors' => $validator->getErrors()]
+            );
+//        }
     }
 }
