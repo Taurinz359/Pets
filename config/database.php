@@ -1,6 +1,8 @@
 <?php
 
-return function (\DI\ContainerBuilder $builder) {
+use DI\Container as Container;
+
+return function (Container $container) {
     $config = [
         'driver' => 'pgsql',
         'host' => 'database',
@@ -11,5 +13,5 @@ return function (\DI\ContainerBuilder $builder) {
         'charset' => 'utf8',
     ];
 
-    $builder->addDefinitions(['db' => $config]);
+    $container->set('db',$config);
 };
