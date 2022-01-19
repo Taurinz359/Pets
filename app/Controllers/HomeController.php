@@ -13,8 +13,8 @@ class HomeController extends Controller
     {
         return Twig::fromRequest($request)->render(
             $response,
-            'register.twig',
-//            ['user' => User::first()?->toArray()]
+            'home.twig',
+            ['db' => User::
         );
     }
 }

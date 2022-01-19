@@ -11,10 +11,10 @@ $container = new Container();
 $database = require __DIR__ . '/database.php';
 $database($container);
 
-$container->set(Validator::class,fn(ContainerInterface $c) => new Validator());
+$container->set(Validator::class, fn(ContainerInterface $c) => new Validator());
 
-$container->set(HomeController::class,fn(ContainerInterface $c) => new HomeController($c));
-$container->set(RegisterController::class,fn(ContainerInterface $c)=> new RegisterController($c));
+$container->set(HomeController::class, fn(ContainerInterface $c) => new HomeController($c));
+$container->set(RegisterController::class, fn(ContainerInterface $c)=> new RegisterController($c));
 
 
 return $container;

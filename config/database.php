@@ -1,6 +1,6 @@
 <?php
 
-use DI\Container as Container;
+use DI\Container;
 
 return function (Container $container) {
     $config = [
@@ -13,5 +13,5 @@ return function (Container $container) {
         'charset' => 'utf8',
     ];
 
-    $container->set('db',$config);
+    $container->set('db', $config);
 };

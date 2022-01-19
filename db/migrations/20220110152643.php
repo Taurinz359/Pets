@@ -19,7 +19,8 @@ final class V20220110152643 extends AbstractMigration
     public function change(): void
     {
         $table  = $this->table('users');
-        $table->addColumn('email','string')
+        $table->addColumn('name','string')
+            ->addColumn('email','string')
             ->addColumn('password', 'string')
             ->addTimestamps()
             ->create();
