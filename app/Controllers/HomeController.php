@@ -14,7 +14,6 @@ class HomeController extends Controller
         return Twig::fromRequest($request)->render(
             $response,
             'home.twig',
-            ['db' => User::
         );
     }
 }

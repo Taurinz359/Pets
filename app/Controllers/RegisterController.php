@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Models\User;
-use Illuminate\Database\Capsule\Manager;
 use Psr\Http\Message\ResponseInterface;
 use Respect\Validation\Validator as v;
 use Slim\Psr7\Request;
@@ -29,16 +28,26 @@ class RegisterController extends Controller
         return $this->getTemplate($request,$response);
     }
 
-
     protected function getTemplate(Request $request, Response $response): Response|\Slim\Psr7\Message|ResponseInterface
     {
-        if($this->validator->getErrors()){
+        if ($this->validator->getErrors()) {
             return Twig::fromRequest($request)->render(
                 $response,
                 'register.twig',
                 ['errors' => $this->validator->getErrors()]
             );
         }
-        return $response->withStatus(302)->withHeader('Location','/home');
+        $this->registerUser($request->getParsedBody());
+        return $response->withStatus(302)->withHeader('Location', '/home');
     }
+
+    private function registerUser(array $request)
+    {
+        $newUser = User::create([
+            'email' => $request['email'],
+            'password' => password_hash($request['password'],PASSWORD_DEFAULT)
+        ]);
+        $newUser->save();
+    }
+
 }
