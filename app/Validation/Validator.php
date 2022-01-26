@@ -19,7 +19,7 @@ class Validator
 
         foreach ($validateRule as $key => $validator) {
             try {
-                $validator->setName($key)->assert($data[$key]);
+                $validator->setName($key)->assert($data[$key] ?? null);
             } catch(NestedValidationException $exception) {
                 $this->errors[$key] = array_values($exception->getMessages());
 

@@ -3,8 +3,8 @@
 return
 [
     'paths' => [
-        'migrations' => '%%PHINX_CONFIG_DIR%%/db/migrations',
-        'seeds' => '%%PHINX_CONFIG_DIR%%/db/seeds'
+        'migrations' => '/db/migrations',
+        'seeds' => '/db/seeds'
     ],
     'environments' => [
         'default_migration_table' => 'phinxlog',
@@ -18,6 +18,11 @@ return
             'port' => 5432,
             'charset' => 'utf8',
         ],
+        'testing'=>[
+            'adapter' => 'sqlite',
+            'name' => 'testing',
+            'charset' => 'utf8'
+        ]
     ],
     'version_order' => 'creation'
 ];
