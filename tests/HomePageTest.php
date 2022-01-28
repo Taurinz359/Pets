@@ -3,7 +3,6 @@
 namespace Tests;
 
 use App\Models\User;
-use Slim\App;
 
 class HomePageTest extends TestCase
 {
@@ -19,16 +18,16 @@ class HomePageTest extends TestCase
     {
         $request = $this->createRequest('POST', '/register')
             ->withParsedBody([
-                'email'=>'email@tres.ru',
+                'email' => 'email@tres.ru',
                 'password' => '1234',
-                'password-check'=> '1234'
+                'password-check' => '1234'
             ]);
 
         $response = $this->app->handle($request);
-
-
-
         $this->assertStringNotContainsString('В глаза долбишься?', (string)$response->getBody());
+        $this->assertStringContainsString('/home',$response->getHeaders()['Location'][0]);
+        $dbTable = new UserTest;
+        $user = $dbTable::select('*')->where('id', '=', 11)->get()->toArray();
+        $this->assertNotEmpty($user);
     }
-
 }
