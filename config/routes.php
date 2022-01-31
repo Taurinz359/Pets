@@ -1,9 +1,10 @@
 <?php
 
+use App\Controllers\AuthController;
 use App\Controllers\HomeController;
-use App\Auth\AuthController;
 use App\Controllers\RegisterController as RegisterController;
 use App\Controllers\Welcome;
+use App\Middleware\AuthMiddleware;
 use Slim\App;
 
 return static function (App $app) {
@@ -13,5 +14,5 @@ return static function (App $app) {
 
     $app->get('/register', [RegisterController::class, 'showRegister']);
     $app->post('/register', [RegisterController::class, 'checkValidate']);
-    $app->get('/home', [HomeController::class, 'index']);
+    $app->get('/home', [HomeController::class, 'index'])->run;
 };

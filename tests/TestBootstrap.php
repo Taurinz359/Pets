@@ -1,13 +1,12 @@
 <?php
 
-use App\Auth\AuthController;
-use App\Controllers\HomeController ;
+use App\Controllers\AuthController;
+use App\Controllers\HomeController;
 use App\Controllers\RegisterController;
 use App\Controllers\Welcome;
 use App\Validation\Validator;
 use DI\Container;
 use Psr\Container\ContainerInterface;
-use Respect\Validation\Factory;
 
 $container = new Container();
 $database = require __DIR__ . '/TestDatabase.php';

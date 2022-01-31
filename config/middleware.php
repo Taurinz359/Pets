@@ -9,4 +9,5 @@ return static function (App $app) {
     $twig->addExtension(new \Twig\Extension\DebugExtension());
     $app->add(TwigMiddlewareAlias::create($app, $twig));
     $app->addErrorMiddleware(true, true, true);
+
 };

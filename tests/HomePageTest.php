@@ -43,7 +43,7 @@ class HomePageTest extends TestCase
         $this->assertEmpty($user);
     }
 
-    public function testRoute()
+    public function test_route()
     {
         $request = $this ->createRequest('GET' , '/');
         $response = $this->app->handle($request);
