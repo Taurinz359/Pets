@@ -28,11 +28,13 @@ class AuthController
     {
 
         $requestData = $request->getParsedBody();
-        return $this->successLogin($response);
+        return $this->successLogin($response,);
     }
 
-    protected function successLogin(Response $response)
+    protected function successLogin(Response $response , bool $success = false)
     {
-        return $response->withStatus(200,'successful login')->withHeader('Location','home');
+        if ($success)
+            return $response->withStatus(200,'successful login')->withHeader('Location','home');
+        return $response->withStatus(400,'unsuccessful login')->withHeader('Location','login');
     }
 }
