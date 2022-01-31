@@ -17,12 +17,16 @@ class UserSeeder extends AbstractSeed
     {
         $faker = Faker\Factory::create();
         $data = [];
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $data[]=[
                 'email'=> $faker->email,
                 'password'=> sha1($faker->password)
             ];
         }
+        $data [] = [
+            'email' => 'admin@area',
+            'password' => 'hashcode'
+        ];
         $this->table('users')->insert($data)->saveData();
     }
 }

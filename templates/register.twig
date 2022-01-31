@@ -1,16 +1,14 @@
 {% extends 'layout.twig' %}
-
 {% block content %}
-    <div class="container w-25 ">
+
+    <div class="container w-25">
         <form method="post" class="needs-validation" novalidate>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Email address</label>
                 <input type="email" class="form-control
                     {% if errors['email'] is not empty %}
-                        {{ "is-invalid" }}
-                    {% endif %}"
-                       id="exampleInputEmail1" required
-                       name="email" aria-describedby="emailHelp" value="dsds@ds.ru">
+                        {{ " is-invalid" }}
+                    {% endif %}" id="exampleInputEmail1" required name="email" aria-describedby="emailHelp" value="dsds@ds.ru">
                 <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                 <div class="invalid-feedback">
                     {{ errors['email'][0] }}
@@ -20,9 +18,8 @@
                 <label for="exampleInputPassword1" class="form-label">Password</label>
                 <input type="password" class="form-control
                     {% if errors['password-check'] is not empty %}
-                        {{ "is-invalid" }}
-                    {% endif %}" value="1234"
-                       id="exampleInputPassword1" required name="password">
+                        {{ " is-invalid" }}
+                    {% endif %}" value="1234" id="exampleInputPassword1" required name="password">
                 <div class="invalid-feedback">
                     {{ errors['password-check'][0] }}
                 </div>
@@ -30,16 +27,16 @@
             <div class="row g-3 align-items-center">
                 <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1"  value="1234" required
-                           name="password-check">
+                    <input type="password" class="form-control" id="exampleInputPassword1" value="1234" required name="password-check">
                 </div>
                 <div class="col-auto">
-                <span id="passwordHelpInline" class="form-text">
-                    Must be 8-20 characters long.
-                </span>
+                    <span id="passwordHelpInline" class="form-text">
+                        Must be 8-20 characters long.
+                    </span>
+                </div>
             </div>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-</div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
 {% endblock %}
