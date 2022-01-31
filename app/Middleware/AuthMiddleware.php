@@ -2,19 +2,15 @@
 
 namespace App\Middleware;
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-use Slim\App;
-use Slim\Handlers\Strategies\RequestHandler;
-use Slim\Psr7\Request;
-use Slim\Psr7\Response;
-
-class AuthMiddleware
+class AuthMiddleware implements MiddlewareInterface
 {
-    protected Response $responce;
-    protected Request $request;
-
-    public function __invoke(Request $request, Response $response): Response
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        var_dump('middleware');
+        return $handler->handle($request);
     }
 }
