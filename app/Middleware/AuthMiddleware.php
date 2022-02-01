@@ -2,20 +2,23 @@
 
 namespace App\Middleware;
 
-use http\Cookie;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
-use Psr\Http\Server\RequestHandlerInterface;
-use Slim\Psr7\Cookies;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+use Slim\App;
 
-class AuthMiddleware implements MiddlewareInterface
+
+class AuthMiddleware
 {
-
-
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function __invoke(Request $request, RequestHandler $handler ): Response
     {
-        $request->withCookieParams(['lowara' => 'ny lox che']);
-        return $handler->handle($request);
+        $response = $handler->handle($request);
+        var_dump($_COOKIE);
+        return $response->withHeader('Set-Cookie', $this->checkCookie());
+    }
+
+    private function checkCookie():string
+    {
+        return "Empty";
     }
 }

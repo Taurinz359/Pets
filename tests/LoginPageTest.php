@@ -26,13 +26,33 @@ class LoginPageTest extends TestCase
 
     public function test_failed_login_data(): void
     {
-        $request = $this->createRequest('POST', '/login') ->withParsedBody(
+        $request = $this->createRequest('POST', '/login')->withParsedBody(
             [
                 'email' => 'admdsadsin@area.ru',
                 'password' => 'hashcdsdsode'
             ]
         );
         $response = $this->app->handle($request);
-        $this->assertEquals(400 , $response->getStatusCode());
+        $this->assertEquals(400, $response->getStatusCode());
+    }
+
+    public function test_home_rout()
+    {
+        $request = $this->createRequest('GET', '/home');
+        $response = $this->app->handle($request);
+        $this->assertEquals(301, $response->getStatusCode());
+    }
+
+    public function test_cookie_login_page()
+    {
+        $requset = $this->createRequest(
+            "POST", "/login")->withParsedBody(
+            [
+                'email' => 'admdsadsin@area.ru',
+                'password' => 'hashcdsdsode'
+            ]
+        )->withCookieParams(['lol' => 'prekol']);
+        $response = $this->app->handle($requset);
+        var_dump($requset->getCookieParams());die;
     }
 }

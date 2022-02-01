@@ -15,8 +15,6 @@ $database($container);
 
 $container->set(Auth::class, fn(ContainerInterface $c) => new Auth($c));
 $container->set(AuthController::class, fn(ContainerInterface $c) => new AuthController($c));
-
-$container->set(Auth::class, fn(ContainerInterface $c) => new Auth($c));
 $container->set(Validator::class, fn(ContainerInterface $c) => new Validator($c));
 $container->set(Welcome::class, fn(ContainerInterface $c) => new Welcome($c));
 $container->set(HomeController::class, fn(ContainerInterface $c) => new HomeController($c));
