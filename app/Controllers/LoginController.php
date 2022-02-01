@@ -20,7 +20,7 @@ class LoginController extends Controller
 //        todo request to auth
     }
 
-    protected function IsSuccessLogin(Response $response, bool $success = false)
+    protected function isSuccessLogin(Response $response, bool $success = false)
     {
         if ($success) {
             return $response->withStatus(200, 'successful login')->withHeader('Location', 'home');

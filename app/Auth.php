@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Models\User;
 use Psr\Container\ContainerInterface;
 
 class Auth
@@ -14,19 +13,30 @@ class Auth
         $this->container = $container;
     }
 
-    function attempt(): bool
+    public function attempt(): bool
     {
         // setcookie()
     }
 
-    function checkToken()
+    public function checkToken(): bool
     {
         var_dump($_COOKIE['lol']);
+        if ($this->validateToken()) {
+            return true;
+        }
+        return false;
+        // $_COOKIE['token']
+        // validateToken()
+        // set current auth user
+        // return true
+        // setcookie('token', null, -1);
+    }
 
-// $_COOKIE['token']
-// validateToken()
-// set current auth user
-// return true
-// setcookie('token', null, -1);
+    private function validateToken()
+    {
+        if ($_COOKIE[md5('TestToken')]) {
+            return true;
+        }
+        return false;
     }
 }
