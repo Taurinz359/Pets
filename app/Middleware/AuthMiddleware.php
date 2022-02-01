@@ -2,23 +2,32 @@
 
 namespace App\Middleware;
 
+use App\Auth;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use Slim\App;
-
 
 class AuthMiddleware
 {
-    public function __invoke(Request $request, RequestHandler $handler ): Response
+    private ContainerInterface $container;
+    private Auth $auth;
+
+    public function __construct(ContainerInterface $container)
     {
-        $response = $handler->handle($request);
-        var_dump($_COOKIE);
-        return $response->withHeader('Set-Cookie', $this->checkCookie());
+        $this->container = $container;
     }
 
-    private function checkCookie():string
+    private function isValidateUser(Request $request, RequestHandler $handler):Response
     {
-        return "Empty";
+        $this->auth = $this->container->get(Auth::class);
+        $this->auth->checkToken();
+
+        return $response = $handler->handle($request);
+    }
+
+    public function __invoke(Request $request, RequestHandler $handler): Response
+    {
+        return $this->isValidateUser($request, $handler);
     }
 }

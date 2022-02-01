@@ -13,13 +13,11 @@ class Controller
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->validator=$this->container->get(Validator::class);
+        $this->validator = $this->container->get(Validator::class);
     }
 
 //    public function getValidator(): Validator
 //    {
 //        return $this->container->get(Validator::class);
 //    }
-
-
 }

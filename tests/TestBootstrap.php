@@ -1,6 +1,6 @@
 <?php
 
-use App\Controllers\AuthController;
+use App\Controllers\LoginController;
 use App\Controllers\HomeController;
 use App\Controllers\RegisterController;
 use App\Controllers\Welcome;
@@ -14,7 +14,7 @@ $database($container);
 
 
 
-$container->set(AuthController::class,fn(ContainerInterface $c) => new AuthController($c));
+$container->set(LoginController::class,fn(ContainerInterface $c) => new LoginController($c));
 $container->set(Validator::class, fn(ContainerInterface $c) => new Validator());
 $container->set(Welcome::class, fn(ContainerInterface $c) => new Welcome());
 $container->set(HomeController::class, fn(ContainerInterface $c) => new HomeController($c));

@@ -9,7 +9,7 @@ use Slim\Views\Twig;
 
 class HomeController extends Controller
 {
-    public function index(Request $request,Response $response): Response
+    public function index(Request $request, Response $response): Response
     {
         return Twig::fromRequest($request)->render(
             $response,

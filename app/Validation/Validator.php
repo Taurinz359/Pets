@@ -2,7 +2,6 @@
 
 namespace App\Validation;
 
-
 use Respect\Validation\Exceptions\NestedValidationException;
 use Respect\Validation\Validator as v;
 use Slim\Psr7\Request;
@@ -20,18 +19,18 @@ class Validator
         foreach ($validateRule as $key => $validator) {
             try {
                 $validator->setName($key)->assert($data[$key] ?? null);
-            } catch(NestedValidationException $exception) {
+            } catch (NestedValidationException $exception) {
                 $this->errors[$key] = array_values($exception->getMessages());
-
             }
         }
     }
 
-    public function getErrors(){
+    public function getErrors()
+    {
         return $this->errors;
     }
 
-    public function hasFailed():bool
+    public function hasFailed(): bool
     {
         return !empty($this->errors);
     }

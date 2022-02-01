@@ -36,14 +36,15 @@ class LoginPageTest extends TestCase
         $this->assertEquals(400, $response->getStatusCode());
     }
 
-    public function test_home_rout()
+    public function test_home_rout_without_cookie()
     {
         $request = $this->createRequest('GET', '/home');
         $response = $this->app->handle($request);
         $this->assertEquals(301, $response->getStatusCode());
+        var_dump($request->get); die;
     }
 
-    public function test_cookie_login_page()
+    public function test_home_rout_with_cookie()
     {
         $requset = $this->createRequest(
             "POST", "/login")->withParsedBody(

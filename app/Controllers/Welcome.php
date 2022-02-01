@@ -10,6 +10,6 @@ class Welcome
 {
     public function showWelcome(Request $request, Response $response)
     {
-        return Twig::fromRequest($request)->render($response ,'welcome.twig');
+        return Twig::fromRequest($request)->render($response, 'welcome.twig');
     }
 }

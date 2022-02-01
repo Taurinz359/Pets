@@ -9,12 +9,11 @@ use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Slim\Views\Twig;
 
-
 class RegisterController extends Controller
 {
     public function showRegister(Request $request, Response $response): ResponseInterface
     {
-        return Twig::fromRequest($request)->render($response,'register.twig');
+        return Twig::fromRequest($request)->render($response, 'register.twig');
     }
 
     public function checkValidate(Request $request, Response $response): ResponseInterface
@@ -27,7 +26,7 @@ class RegisterController extends Controller
             'password' => v::notEmpty()->length(3, 30),
             'password-check' => v::notEmpty()->length(3, 30)->equals($pass)->setTemplate('В глаза долбишься?'),
         ]);
-        return $this->getTemplate($request,$response);
+        return $this->getTemplate($request, $response);
     }
 
     protected function getTemplate(Request $request, Response $response): Response|\Slim\Psr7\Message|ResponseInterface
@@ -47,10 +46,9 @@ class RegisterController extends Controller
     {
         $newUser = User::create([
             'email' => $request['email'],
-            'password' => password_hash($request['password'],PASSWORD_DEFAULT)
+            'password' => password_hash($request['password'], PASSWORD_DEFAULT)
         ]);
 
         $newUser->save();
     }
-
 }
