@@ -19,24 +19,24 @@ class AuthMiddleware
     }
 
     /**
-     * @return string Route
+     * @return Response
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
 
-    private function isValidateUser(): string
+    private function isValidateUser(Request $request, RequestHandler $handler): Response
     {
         $this->auth = $this->container->get(Auth::class);
+        $response = $handler->handle($request);
+        $this->auth->checkToken();
         if ($this->auth->checkToken()) {
-            return "/home";
+            return $response;
         }
-        return "/";
+        return $response->withHeader('Location', '/')->withStatus(301);
     }
 
     public function __invoke(Request $request, RequestHandler $handler): Response
     {
-        $route = $this->isValidateUser();
-        $response = $handler->handle($request);
-        return $response->withHeader('Location', '/login');
+        return $this->isValidateUser($request, $handler);
     }
 }

@@ -20,7 +20,6 @@ class Auth
 
     public function checkToken(): bool
     {
-        var_dump($_COOKIE['lol']);
         if ($this->validateToken()) {
             return true;
         }
@@ -34,7 +33,7 @@ class Auth
 
     private function validateToken()
     {
-        if ($_COOKIE[md5('TestToken')]) {
+        if (!empty($_COOKIE[md5('TestToken')])) {
             return true;
         }
         return false;
