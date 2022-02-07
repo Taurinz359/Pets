@@ -23,11 +23,12 @@ class HomePageTest extends TestCase
 
     public function test_home_rout_with_cookie()
     {
+        $cookieValues = password_hash('6',PASSWORD_DEFAULT). md5("bottle") . password_hash('testPassword',PASSWORD_DEFAULT);
         $request = $this->createRequest(
             'GET',
             '/home',
             ['HTTP_ACCEPT' => 'application/json'],
-            [md5('TestToken') => ''] //todo Установить значение для куки
+            [md5('TestToken') => $cookieValues] //todo Установить значение для куки
         );
         $response = $this->app->handle($request);
         $this->assertEquals(200, $response->getStatusCode());

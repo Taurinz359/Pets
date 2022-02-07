@@ -25,7 +25,7 @@ class UserSeeder extends AbstractSeed
         }
         $data [] = [
             'email' => 'admin@area',
-            'password' => 'hashcode'
+            'password' => password_hash('testPassword',PASSWORD_DEFAULT)
         ];
         $this->table('users')->insert($data)->saveData();
     }

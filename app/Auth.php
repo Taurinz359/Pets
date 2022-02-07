@@ -3,6 +3,8 @@
 namespace App;
 
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
 class Auth
 {
@@ -18,9 +20,9 @@ class Auth
         // setcookie()
     }
 
-    public function checkToken(): bool
+    public function checkToken(Request $request, RequestHandler $handler): bool
     {
-        if ($this->validateToken()) {
+        if ($this->validateToken($request)) {
             return true;
         }
         return false;
@@ -31,9 +33,12 @@ class Auth
         // setcookie('token', null, -1);
     }
 
-    private function validateToken()
+    private function validateToken(Request $request)
     {
-        if (!empty($_COOKIE[md5('TestToken')])) {
+        if(!empty($request->getCookieParams()[md5('TestToken')])){
+            $cookie = $request->getCookieParams()[md5('TestToken')];
+            $cookieValues = explode(md5("bottle"),$cookie,2);
+            var_dump($cookieValues);
             return true;
         }
         return false;
