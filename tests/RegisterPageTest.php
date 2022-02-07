@@ -23,7 +23,7 @@ class RegisterPageTest extends TestCase
         $this->assertStringNotContainsString('В глаза долбишься?', (string)$response->getBody());
         $this->assertStringContainsString('/home', $response->getHeaders()['Location'][0]);
         $dbTable = new UserTest();
-        $user = $dbTable::select('*')->where('id', '=', 11)->get()->toArray();
+        $user = $dbTable::select('*')->where('id', '=', 6)->get()->toArray();
         $this->assertNotEmpty($user);
     }
 

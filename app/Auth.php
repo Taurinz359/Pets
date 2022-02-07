@@ -18,6 +18,7 @@ class Auth
     public function attempt(): bool
     {
         // setcookie()
+
     }
 
     public function checkToken(Request $request, RequestHandler $handler): bool
@@ -30,7 +31,7 @@ class Auth
         // validateToken()
         // set current auth user
         // return true
-        // setcookie('token', null, -1);
+
     }
 
     private function validateToken(Request $request)
@@ -39,8 +40,15 @@ class Auth
             $cookie = $request->getCookieParams()[md5('TestToken')];
             $cookieValues = explode(md5("bottle"),$cookie,2);
             var_dump($cookieValues);
+            /*todo
+                Сравниваем юзера с бд. Нам нужен хэш айди и хэш пасса
+                можно попробовать прогнать в цикле
+                setcookie('token', null, -1);
+                Если с куки  какие то проблемы или нет такого юзера в бд -> удалить куки.
+            */
             return true;
         }
         return false;
+
     }
 }
