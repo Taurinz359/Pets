@@ -28,7 +28,7 @@ class AuthMiddleware
     {
         $this->auth = $this->container->get(Auth::class);
         $response = $handler->handle($request);
-        if ($this->auth->checkToken($request,$handler)) {
+        if ($this->auth->checkToken($request, $handler)) {
             return $response->withStatus(200);
         }
         return $response->withHeader('Location', '/')->withStatus(301);

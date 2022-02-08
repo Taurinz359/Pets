@@ -6,6 +6,7 @@ use App\Models\User;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+
 use function DI\get;
 
 class Auth
@@ -17,35 +18,32 @@ class Auth
         $this->container = $container;
     }
 
-    public function attempt(): bool
+    public function attempt() //bool
     {
+        echo 'lol';
         // setcookie()
-
     }
 
     public function checkToken(Request $request, RequestHandler $handler): bool
     {
-        if ($this->validateToken($request)) {
-            return true;
-        }
-        return false;
+        return $this->validateToken($request);
         // $_COOKIE['token']
         // validateToken()
         // set current auth user
         // return true
-
     }
 
-    private function validateToken(Request $request)
+    private function validateToken(Request $request): bool
     {
-        if(!empty($request->getCookieParams()[md5('TestToken')])){
+        if (!empty($request->getCookieParams()[md5('TestToken')])) {
             $cookie = $request->getCookieParams()[md5('TestToken')];
-            $cookieValues = explode(md5("bottle"),$cookie,2);
+            $cookieValues = explode(md5("bottle"), $cookie, 2);
             $user = User::find($cookieValues[0]);
-            if ($user !== null && $cookieValues[1] === $user->password)
+            if ($user !== null && $cookieValues[1] === $user->password) {
                 return true;
-            elseif ($user !== null && $cookieValues[1] !== $user->password)
-                setcookie(md5('TestToken') ,'',-1);
+            } elseif ($user !== null && $cookieValues[1] !== $user->password) {
+                setcookie(md5('TestToken'), '', -1);
+            }
         }
         return false;
     }

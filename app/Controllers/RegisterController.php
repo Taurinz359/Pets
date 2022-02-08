@@ -48,7 +48,6 @@ class RegisterController extends Controller
             'email' => $request['email'],
             'password' => password_hash($request['password'], PASSWORD_DEFAULT)
         ]);
-
         $newUser->save();
     }
 }
