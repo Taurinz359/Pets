@@ -38,10 +38,9 @@ class AuthMiddleware
     {
         $cookieValue = implode(md5('bottle'), [
             1 => '6',
-            2 => password_hash('hashcode', PASSWORD_DEFAULT)
+            2 => '$2y$10$XKkx4ftZzVIVBB09IobUC.VKgpAdXFQb0UnbiPK90F5pCwqYP3WJO'
         ]);
-        setcookie(md5('TestToken'),$cookieValue);
-
+//        setcookie(md5('TestToken'),$cookieValue);
         return $this->isValidateUser($request, $handler);
     }
 }

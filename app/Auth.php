@@ -40,22 +40,13 @@ class Auth
     {
         if(!empty($request->getCookieParams()[md5('TestToken')])){
             $cookie = $request->getCookieParams()[md5('TestToken')];
-            var_dump($cookie);
-
             $cookieValues = explode(md5("bottle"),$cookie,2);
-            var_dump($cookieValues);
-            $db = User::find(6);
-            var_dump($db->password);
-
-            /*todo
-                Сравниваем юзера с бд. Нам нужен хэш айди и хэш пасса
-                можно попробовать прогнать в цикле
-                setcookie('token', null, -1);
-                Если с куки  какие то проблемы или нет такого юзера в бд -> удалить куки.
-            */
-            return true;
+            $user = User::find($cookieValues[0]);
+            if ($user !== null && $cookieValues[1] === $user->password)
+                return true;
+            elseif ($user !== null && $cookieValues[1] !== $user->password)
+                setcookie(md5('TestToken') ,'',-1);
         }
         return false;
-
     }
 }
