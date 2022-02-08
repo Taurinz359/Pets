@@ -2,9 +2,11 @@
 
 namespace App;
 
+use App\Models\User;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+use function DI\get;
 
 class Auth
 {
@@ -38,8 +40,13 @@ class Auth
     {
         if(!empty($request->getCookieParams()[md5('TestToken')])){
             $cookie = $request->getCookieParams()[md5('TestToken')];
+            var_dump($cookie);
+
             $cookieValues = explode(md5("bottle"),$cookie,2);
             var_dump($cookieValues);
+            $db = User::find(6);
+            var_dump($db->password);
+
             /*todo
                 Сравниваем юзера с бд. Нам нужен хэш айди и хэш пасса
                 можно попробовать прогнать в цикле

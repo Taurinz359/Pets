@@ -36,6 +36,12 @@ class AuthMiddleware
 
     public function __invoke(Request $request, RequestHandler $handler): Response
     {
+        $cookieValue = implode(md5('bottle'), [
+            1 => '6',
+            2 => password_hash('hashcode', PASSWORD_DEFAULT)
+        ]);
+        setcookie(md5('TestToken'),$cookieValue);
+
         return $this->isValidateUser($request, $handler);
     }
 }
