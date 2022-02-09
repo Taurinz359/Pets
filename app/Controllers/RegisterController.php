@@ -36,13 +36,20 @@ class RegisterController extends Controller
                 'register.twig',
                 ['errors' => $this->validator->getErrors()]
             );
+        } elseif ($this->isUniqEmailInDb($request->getParsedBody())) {
+            return Twig::fromRequest($request)->render(
+                $response,
+                'register.twig',
+                ['errors' => ['email' => [0 => 'Такой Email уже сущетсвует']]]);
         }
         $this->registerUser($request->getParsedBody());
         return $response->withStatus(302)->withHeader('Location', '/home');
     }
 
-    private function checkUniqInDb(){
-
+    private function isUniqEmailInDb($requestData): bool
+    {
+        $userData = User::where('email', $requestData['email'])->first();
+        return (!empty($userData));
     }
 
     private function registerUser(array $request)
