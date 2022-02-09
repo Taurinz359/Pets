@@ -20,7 +20,6 @@ class RegisterController extends Controller
     {
         $requestData = $request->getParsedBody();
         $pass = array_key_exists('password', $requestData) ? $requestData['password'] : null;
-
         $this->validator->validate($requestData, [
             'email' => v::email()->setTemplate('Ты че хуила? Ты че удумал:?'),
             'password' => v::notEmpty()->length(3, 30),
@@ -40,6 +39,10 @@ class RegisterController extends Controller
         }
         $this->registerUser($request->getParsedBody());
         return $response->withStatus(302)->withHeader('Location', '/home');
+    }
+
+    private function checkUniqInDb(){
+
     }
 
     private function registerUser(array $request)

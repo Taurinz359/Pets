@@ -7,6 +7,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
+use Slim\Psr7\Response;
 use function DI\get;
 
 class Auth
@@ -19,16 +20,17 @@ class Auth
         $this->container = $container;
     }
 
-    public function attempt($userData, Request $request)
+    public function attempt($userData, Request $request, Response $response)
     {
         if (!$this->validateToken($request)) {
-            $cookieValue = implode(md5('bottle'), [
-                1 => $userData->id,
-                2 => $userData->password
-            ]);
-            setcookie(md5('TestToken'), $cookieValue);
+            $cookie = md5('TestToken') . '=' .
+                implode(md5('bottle'), [
+                    1 => $userData->id,
+                    2 => $userData->password
+                ]);
+            return $response->withHeader('Set-Cookie',$cookie);
         }
-        // setcookie()
+        return $response;
     }
 
     public function checkToken(Request $request, RequestHandler $handler): bool

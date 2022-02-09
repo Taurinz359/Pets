@@ -38,4 +38,9 @@ class AuthMiddleware
     {
         return $this->isValidateUser($request, $handler);
     }
+
+    public function deleteCookie()
+    {
+
+    }
 }
