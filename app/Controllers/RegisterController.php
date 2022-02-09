@@ -40,7 +40,8 @@ class RegisterController extends Controller
             return Twig::fromRequest($request)->render(
                 $response,
                 'register.twig',
-                ['errors' => ['email' => [0 => 'Такой Email уже сущетсвует']]]);
+                ['errors' => ['email' => [0 => 'Такой Email уже сущетсвует']]]
+            );
         }
         $this->registerUser($request->getParsedBody());
         return $response->withStatus(302)->withHeader('Location', '/home');

@@ -25,7 +25,7 @@ class HomePageTest extends TestCase
     {
         $cookieValue = implode(md5('bottle'), [
             1 => '6',
-            2 => '$2y$10$Xyt7o0Yj5l5bVUZGAG9dFOxTysAkWj'
+            2 => 'hashcode'
         ]);
         $request = $this->createRequest(
             'GET',

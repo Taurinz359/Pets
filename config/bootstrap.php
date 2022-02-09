@@ -6,6 +6,7 @@ use App\Controllers\HomeController;
 use App\Controllers\RegisterController;
 use App\Controllers\Welcome;
 use App\Middleware\AuthMiddleware;
+use App\Middleware\RegisterMiddleware;
 use App\Validation\Validator;
 use DI\Container;
 use Psr\Container\ContainerInterface;
@@ -17,6 +18,7 @@ $database($container);
 $container->set(Auth::class, fn(ContainerInterface $c) => new Auth($c));
 $container->set(LoginController::class, fn(ContainerInterface $c) => new LoginController($c));
 $container->set(AuthMiddleware::class, fn(ContainerInterface $c) => new AuthMiddleware($c));
+$container->set(RegisterMiddleware::class, fn(ContainerInterface $c) => new RegisterMiddleware($c));
 
 $container->set(Validator::class, fn(ContainerInterface $c) => new Validator($c));
 $container->set(Welcome::class, fn(ContainerInterface $c) => new Welcome($c));

@@ -23,7 +23,7 @@ class LoginController extends Controller
         $requestData = $request->getParsedBody();
         $userData = User::where('email', $requestData['email'])->first();
         if (!empty($userData) && password_verify($requestData['password'], $userData->password)) {
-            $response = $this->auth->attempt($userData, $request,$response);
+            $response = $this->auth->attempt($userData, $request, $response);
             return $this->isSuccessLogin($response, true);
         }
         return $this->isSuccessLogin($response, false);

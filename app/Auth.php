@@ -6,15 +6,13 @@ use App\Models\User;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-
 use Slim\Psr7\Response;
+
 use function DI\get;
 
 class Auth
 {
-    protected $container;
-    private $user;
-
+    protected ContainerInterface $container;
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
@@ -22,27 +20,28 @@ class Auth
 
     public function attempt($userData, Request $request, Response $response)
     {
-        if (!$this->validateToken($request)) {
+        if (!$this->validateToken($request,$response)) {
             $cookie = md5('TestToken') . '=' .
                 implode(md5('bottle'), [
                     1 => $userData->id,
                     2 => $userData->password
                 ]);
-            return $response->withHeader('Set-Cookie',$cookie);
+            return $response->withHeader('Set-Cookie', $cookie);
         }
         return $response;
     }
 
-    public function checkToken(Request $request, RequestHandler $handler): bool
+
+    public function checkToken(Request $request, Response $response): bool
     {
-        return $this->validateToken($request);
+        return $this->validateToken($request, $response);
         // $_COOKIE['token']
         // validateToken()
         // set current auth user
         // return true
     }
 
-    private function validateToken(Request $request): bool
+    public function validateToken(Request $request , Response $response): bool
     {
         if (!empty($request->getCookieParams()[md5('TestToken')])) {
             $cookie = $request->getCookieParams()[md5('TestToken')];
@@ -54,7 +53,8 @@ class Auth
             if ($user !== null && $cookieValues[1] === $user->password) {
                 return true;
             } elseif ($user !== null && $cookieValues[1] !== $user->password) {
-                setcookie(md5('TestToken'), '', -1);
+                $response->withAddedHeader('Set-Cookie', 'token=deleted; path=/; expires=-1');
+                //return response in Auth Придумать реализацию
             }
         }
         return false;
