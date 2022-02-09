@@ -34,19 +34,4 @@ class LoginPageTest extends TestCase
         $this->assertEquals(400, $response->getStatusCode());
     }
 
-    public function test_login_rout_with_cookie()
-    {
-        $requset = $this->createRequest(
-            "POST",
-            "/login"
-        )->withParsedBody(
-            [
-                'email' => 'admdsadsin@area.ru',
-                'password' => 'hashcdsdsode'
-                ]
-        )->withCookieParams(['lol' => 'prekol']);
-        $response = $this->app->handle($requset);
-        var_dump($requset->getCookieParams());
-        die;
-    }
 }

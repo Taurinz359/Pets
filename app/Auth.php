@@ -20,7 +20,6 @@ class Auth
 
     public function attempt() //bool
     {
-        echo 'lol';
         // setcookie()
     }
 

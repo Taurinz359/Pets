@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Auth;
 use App\Middleware\AuthMiddleware;
+use App\Models\User;
 use Psr\Container\ContainerInterface;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -21,10 +22,12 @@ class LoginController extends Controller
     public function checkLogin(Request $request, Response $response)
     {
         $requestData = $request->getParsedBody();
-        $this->auth->attempt();
-        var_dump($requestData);
-
-        return $this->isSuccessLogin($response);
+        $userData = User::where('email', $requestData['email'])->first();
+        if (!empty($userData) && password_verify($requestData['password'], $userData->password)) {
+            $this->auth->attempt();
+            return $this->isSuccessLogin($response, true);
+        }
+        return $this->isSuccessLogin($response, false);
 //        todo request to auth
     }
 
