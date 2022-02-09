@@ -33,5 +33,4 @@ class LoginPageTest extends TestCase
         $response = $this->app->handle($request);
         $this->assertEquals(400, $response->getStatusCode());
     }
-
 }

@@ -13,13 +13,21 @@ class Auth
 {
     protected $container;
     private $user;
+
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
 
-    public function attempt() //bool
+    public function attempt($userData, Request $request)
     {
+        if (!$this->validateToken($request)) {
+            $cookieValue = implode(md5('bottle'), [
+                1 => $userData->id,
+                2 => $userData->password
+            ]);
+            setcookie(md5('TestToken'), $cookieValue);
+        }
         // setcookie()
     }
 
@@ -37,6 +45,9 @@ class Auth
         if (!empty($request->getCookieParams()[md5('TestToken')])) {
             $cookie = $request->getCookieParams()[md5('TestToken')];
             $cookieValues = explode(md5("bottle"), $cookie, 2);
+            if (empty($cookieValues)) {
+                return false;
+            }
             $user = User::find($cookieValues[0]);
             if ($user !== null && $cookieValues[1] === $user->password) {
                 return true;

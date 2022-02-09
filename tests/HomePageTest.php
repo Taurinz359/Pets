@@ -25,13 +25,13 @@ class HomePageTest extends TestCase
     {
         $cookieValue = implode(md5('bottle'), [
             1 => '6',
-            2 => 'hashcode'
+            2 => '$2y$10$Xyt7o0Yj5l5bVUZGAG9dFOxTysAkWj'
         ]);
         $request = $this->createRequest(
             'GET',
             '/home',
             ['HTTP_ACCEPT' => 'application/json'],
-            [md5('TestToken') => $cookieValue] //todo Установить значение для куки
+            [md5('TestToken') => $cookieValue]
         );
         $response = $this->app->handle($request);
         $this->assertEquals(200, $response->getStatusCode());

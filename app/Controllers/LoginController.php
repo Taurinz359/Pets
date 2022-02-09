@@ -12,7 +12,6 @@ use Slim\Views\Twig;
 
 class LoginController extends Controller
 {
-
     public function showLogin(Request $request, Response $response)
     {
         return Twig::fromRequest($request)->render($response, 'login.twig');
@@ -24,7 +23,7 @@ class LoginController extends Controller
         $requestData = $request->getParsedBody();
         $userData = User::where('email', $requestData['email'])->first();
         if (!empty($userData) && password_verify($requestData['password'], $userData->password)) {
-            $this->auth->attempt();
+            $this->auth->attempt($userData, $request);
             return $this->isSuccessLogin($response, true);
         }
         return $this->isSuccessLogin($response, false);
