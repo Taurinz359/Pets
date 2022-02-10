@@ -24,7 +24,7 @@ class HomePageTest extends TestCase
     public function test_home_rout_with_cookie()
     {
         $cookieValue = implode(md5('bottle'), [
-            1 => '6',
+            1 => '12',
             2 => 'hashcode'
         ]);
         $request = $this->createRequest(

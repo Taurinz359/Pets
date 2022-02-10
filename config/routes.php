@@ -5,6 +5,7 @@ use App\Controllers\HomeController;
 use App\Controllers\RegisterController as RegisterController;
 use App\Controllers\Welcome;
 use App\Middleware\AuthMiddleware;
+use App\Middleware\RegisterMiddleware;
 use Slim\App;
 
 return static function (App $app) {
@@ -13,6 +14,6 @@ return static function (App $app) {
     $app->post('/login', [LoginController::class, 'checkLogin']);
 
     $app->get('/register', [RegisterController::class, 'showRegister']);
-    $app->post('/register', [RegisterController::class, 'checkValidate']);
+    $app->post('/register', [RegisterController::class, 'checkValidate'])->add(new  RegisterMiddleware($app->getContainer()));
     $app->get('/home', [HomeController::class, 'index'])->add(new AuthMiddleware($app->getContainer()));
 };

@@ -31,12 +31,14 @@ class AuthMiddleware
         if ($this->auth->checkToken($request, $response)) {
             return $response->withStatus(200);
         }
-        return $response->withHeader('Location', '/')->withStatus(301);
+        $cookie = md5('TestToken') . '=deleted; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; Max-Age=0;';
+        return $response->withHeader('Location', '/')->
+        withHeader('Set-Cookie', $cookie)->
+        withStatus(301);
     }
 
     public function __invoke(Request $request, RequestHandler $handler): Response
     {
         return $this->isValidateUser($request, $handler);
     }
-
 }

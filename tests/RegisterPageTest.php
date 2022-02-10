@@ -48,6 +48,4 @@ class RegisterPageTest extends TestCase
         $response = $this->app->handle($request);
         $this->assertStringContainsString('Welcome', (string)$response->getBody());
     }
-
-
 }
