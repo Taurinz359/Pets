@@ -14,6 +14,6 @@ return static function (App $app) {
     $app->post('/login', [LoginController::class, 'checkLogin']);
 
     $app->get('/register', [RegisterController::class, 'showRegister']);
-    $app->post('/register', [RegisterController::class, 'checkValidate'])->add(new  RegisterMiddleware($app->getContainer()));
+    $app->post('/register', [RegisterController::class, 'checkValidate']);
     $app->get('/home', [HomeController::class, 'index'])->add(new AuthMiddleware($app->getContainer()));
 };

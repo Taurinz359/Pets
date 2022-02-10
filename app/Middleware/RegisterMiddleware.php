@@ -22,14 +22,14 @@ class RegisterMiddleware
     {
         $response = $handler->handle($request);
         $response = $this->deleteToken($request, $response);
-        return $response->withHeader('Location', '/login');
+        return $response;
     }
 
     private function deleteToken(Request $request, Response $response)
     {
         $this->auth = $this->container->get(Auth::class);
         if ($this->auth->checkToken($request, $response)) {
-            $cookie = md5('TestToken') . '=deleted; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; Max-Age=0;';
+            $cookie = md5('TestToken') . '=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; Max-Age=0;';
             return $response->withHeader('Set-Cookie', $cookie);
         }
         return $response;

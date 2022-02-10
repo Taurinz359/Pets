@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Auth;
 use App\Models\User;
 use Psr\Http\Message\ResponseInterface;
 use Respect\Validation\Validator as v;
@@ -43,6 +44,7 @@ class RegisterController extends Controller
                 ['errors' => ['email' => [0 => 'Такой Email уже сущетсвует']]]
             );
         }
+        $response = $this->deleteToken($request,$response);
         $this->registerUser($request->getParsedBody());
         return $response->withStatus(302)->withHeader('Location', '/home');
     }
@@ -60,5 +62,15 @@ class RegisterController extends Controller
             'password' => password_hash($request['password'], PASSWORD_DEFAULT)
         ]);
         $newUser->save();
+    }
+
+    private function deleteToken(\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Message\ResponseInterface $response)
+    {
+        $this->auth = $this->container->get(Auth::class);
+        if ($this->auth->checkToken($request, $response)) {
+            $cookie = md5('TestToken') . '=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; Max-Age=0;';
+            return $response->withHeader('Set-Cookie', $cookie);
+        }
+        return $response;
     }
 }
