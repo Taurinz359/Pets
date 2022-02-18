@@ -4,13 +4,22 @@
         <form method="post">
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Email address</label>
-                <input name="email" value="admin@area.ru" type="email" class="form-control" id="exampleInputEmail1"
+                <input name="email" value="admin@area.ru" type="email" class="form-control
+                    {% if errors['email'] is not empty %}
+                        {{ " is-invalid" }}
+                    {% endif %}" id="exampleInputEmail1"
                        aria-describedby="emailHelp">
                 <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                <div class="invalid-feedback">
+                    {{ errors['email'][0] }}
+                </div>
             </div>
             <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">Password</label>
-                <input name="password" value="hashcode" type="password" class="form-control" id="exampleInputPassword1">
+                <input name="password" value="hashcode" type="password" class="form-control
+                    {% if errors['email'] is not empty %}
+                        {{ " is-invalid" }}
+                    {% endif %}" id="exampleInputPassword1">
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
