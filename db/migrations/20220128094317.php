@@ -27,7 +27,7 @@ final class V20220128094317 extends AbstractMigration
 
         $table = $this->table('posts');
         $table->addColumn('name', 'string')
-            ->addColumn('content', 'string')
+            ->addColumn('content', 'text')
             ->addColumn('posted', 'boolean')
             ->create();
         $table->save();

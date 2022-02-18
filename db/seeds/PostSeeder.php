@@ -12,7 +12,7 @@ class PostSeeder extends AbstractSeed
         for ($i = 0; $i < 5; $i++) {
             $data[] = [
                 'name' => $faker->realText(10),
-                'content' => $faker->realText(),
+                'content' => $faker->realText(4000),
                 'posted' => $faker->boolean()
             ];
         }
