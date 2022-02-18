@@ -13,7 +13,7 @@ class PostSeeder extends AbstractSeed
             $data[] = [
                 'name' => $faker->realText(10),
                 'content' => $faker->realText(4000),
-                'posted' => $faker->boolean()
+                'posted' => $faker->numberBetween(1,2)
             ];
         }
         $this->table('posts')->insert($data)->saveData();
