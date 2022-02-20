@@ -24,17 +24,21 @@ class LoginController extends Controller
         $userData = User::where('email', $requestData['email'])->first();
         if (!empty($userData) && password_verify($requestData['password'], $userData->password)) {
             $response = $this->auth->attempt($userData, $request, $response);
-            return $this->isSuccessLogin($response, true);
+            return $this->isSuccessLogin($response, $request, true);
         }
-        return $this->isSuccessLogin($response, false);
+        return $this->isSuccessLogin($response, $request);
 //        todo request to auth
     }
 
-    protected function isSuccessLogin(Response $response, bool $success = false)
+    protected function isSuccessLogin(Response $response, Request $request, bool $success = false)
     {
         if ($success) {
             return $response->withStatus(200, 'successful login')->withHeader('Location', 'home');
         }
-        return $response->withStatus(400, 'unsuccessful login')->withHeader('Location', 'login');
+        return Twig::fromRequest($request)->render(
+            $response->withStatus(400, 'incorrect user'),
+            'login.twig',
+            ['errors' => ['email' => [0 => 'Логин или пароль введён некорректно']]]
+        );
     }
 }

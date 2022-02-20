@@ -1,0 +1,27 @@
+{%  extends 'layout.twig' %}
+{% block content %}
+    <div class="container">
+        {#        {{ dump() }} #}
+        <div class="accordion" id="accordionExample">
+            {% for posts in posts %}
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#post{{ posts['id'] }}" aria-expanded="true"
+                                aria-controls="collapseOne">
+                            {{ posts['name'] }}
+                        </button>
+                    </h2>
+                    <div id="post{{ posts['id'] }}" class="accordion-collapse collapse
+                        {{ (posts['id'] == 1) ? 'show' }}
+                        " aria-labelledby="headingOne"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            {{ posts['content'] }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

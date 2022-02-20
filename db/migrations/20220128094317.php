@@ -24,5 +24,12 @@ final class V20220128094317 extends AbstractMigration
             ->addTimestamps()
             ->create();
         $table->save();
+
+        $table = $this->table('posts');
+        $table->addColumn('name', 'string')
+            ->addColumn('content', 'text')
+            ->addColumn('posted', 'integer')
+            ->create();
+        $table->save();
     }
 }

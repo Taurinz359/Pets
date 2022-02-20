@@ -3,6 +3,7 @@
 use App\Controllers\LoginController;
 use App\Auth;
 use App\Controllers\HomeController;
+use App\Controllers\Posts;
 use App\Controllers\RegisterController;
 use App\Controllers\Welcome;
 use App\Middleware\AuthMiddleware;
@@ -15,6 +16,7 @@ $container = new Container();
 $database = require __DIR__ . '/database.php';
 $database($container);
 
+$container->set(Posts::class, fn(ContainerInterface $c) => new Posts($c));
 $container->set(Auth::class, fn(ContainerInterface $c) => new Auth($c));
 $container->set(LoginController::class, fn(ContainerInterface $c) => new LoginController($c));
 $container->set(AuthMiddleware::class, fn(ContainerInterface $c) => new AuthMiddleware($c));
