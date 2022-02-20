@@ -46,7 +46,7 @@ class RegisterController extends Controller
         }
         $response = $this->deleteToken($request,$response);
         $this->registerUser($request->getParsedBody());
-        return $response->withStatus(302)->withHeader('Location', '/home');
+        return $response->withStatus(302)->withHeader('Location', '/login');
     }
 
     private function isUniqEmailInDb($requestData): bool

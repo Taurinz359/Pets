@@ -21,7 +21,7 @@ class RegisterPageTest extends TestCase
             ]);
         $response = $this->app->handle($request);
         $this->assertStringNotContainsString('В глаза долбишься?', (string)$response->getBody());
-        $this->assertStringContainsString('/home', $response->getHeaders()['Location'][0]);
+        $this->assertStringContainsString('/login', $response->getHeaders()['Location'][0]);
         $dbTable = new UserTest();
         $user = $dbTable::select('*')->where('id', '=', 6)->get()->toArray();
         $this->assertNotEmpty($user);
@@ -46,6 +46,6 @@ class RegisterPageTest extends TestCase
     {
         $request = $this ->createRequest('GET', '/');
         $response = $this->app->handle($request);
-        $this->assertStringContainsString('Welcome', (string)$response->getBody());
+        $this->assertStringContainsString('/posts', $response->getHeaders()['Location'][0]);
     }
 }
