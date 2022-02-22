@@ -11,7 +11,7 @@ use App\Models\Posts as PostsDb;
 class PostsController
 {
     protected ContainerInterface $container;
-    private $postsFromDb;
+    private array $postsFromDb;
 
 
     public function __construct(ContainerInterface $container)
@@ -32,6 +32,11 @@ class PostsController
         var_dump($request->getUri()->getPath());
         return Twig::fromRequest($request)->render($response, 'post.twig',
             []);
+    }
+
+    private function getPostFromDb(int $id): PostsDb | bool
+    {
+        //todo Вернуть пост или фолс.
     }
 
     private function getPosts()
