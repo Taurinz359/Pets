@@ -44,7 +44,7 @@ class RegisterController extends Controller
                 ['errors' => ['email' => [0 => 'Такой Email уже сущетсвует']]]
             );
         }
-        $response = $this->deleteToken($request,$response);
+        $response = $this->deleteToken($request, $response);
         $this->registerUser($request->getParsedBody());
         return $response->withStatus(302)->withHeader('Location', '/login');
     }

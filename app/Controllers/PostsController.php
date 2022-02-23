@@ -12,7 +12,7 @@ class PostsController
 {
     protected ContainerInterface $container;
     private array $postsFromDb;
-
+    private $post;
 
     public function __construct(ContainerInterface $container)
     {
@@ -22,21 +22,39 @@ class PostsController
     public function showPosts(Request $request, Response $response)
     {
         $this->getPosts();
-        return Twig::fromRequest($request)->render($response, 'posts.twig',
+        return Twig::fromRequest($request)->render(
+            $response,
+            'posts.twig',
             [
-                'posts' => $this->postsFromDb]);
+                'posts' => $this->postsFromDb
+            ]);
     }
 
     public function showPost(Request $request, Response $response)
     {
-        var_dump($request->getUri()->getPath());
-        return Twig::fromRequest($request)->render($response, 'post.twig',
-            []);
+        $id = intval(trim($request->getUri()->getPath(), "/post/"));
+        if (!$this->getPostFromDb($id)){
+            return Twig::fromRequest($request)->render(
+                $response,
+                'error.twig');
+        }
+        return Twig::fromRequest($request)->render(
+            $response,
+            'post.twig',
+            [
+                'post' => $this->post
+            ]
+        );
+
     }
 
-    private function getPostFromDb(int $id): PostsDb | bool
+    private function getPostFromDb(int $id):bool
     {
-        //todo Вернуть пост или фолс.
+        $this->post = PostsDb::query()->where('id', '=', $id)->get()->toArray();
+        if ($id === 0 || empty($this->post)) {
+            return false;
+        }
+        return true;
     }
 
     private function getPosts()

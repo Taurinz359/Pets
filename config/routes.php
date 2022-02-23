@@ -10,11 +10,11 @@ use App\Middleware\RegisterMiddleware;
 use Slim\App;
 
 return static function (App $app) {
-    $app->redirect('/','/posts');
+    $app->redirect('/', '/posts');
     $app->get('/login', [LoginController::class, 'showLogin']);
     $app->post('/login', [LoginController::class, 'checkLogin']);
     $app->get('/posts', [PostsController::class,'showPosts']);
-    $app->get("/post/{id}",[PostsController::class,'showPost']);
+    $app->get("/post/{id}", [PostsController::class,'showPost']);
 
     $app->get('/register', [RegisterController::class, 'showRegister']);
     $app->post('/register', [RegisterController::class, 'checkValidate']);
