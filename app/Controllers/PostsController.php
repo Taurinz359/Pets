@@ -19,6 +19,11 @@ class PostsController
         $this->container = $container;
     }
 
+    public function writePost(Request $request, Response $response)
+    {
+        return Twig::fromRequest($request)->render($response,'writePost.twig',[]);
+    }
+
     public function showPosts(Request $request, Response $response)
     {
         $this->getPosts();

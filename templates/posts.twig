@@ -1,6 +1,11 @@
 {% extends 'layout.twig' %}
 {% block content %}
     <div class="container w-50">
+        <div class="mb-3 d-grid gap-2 d-md-flex justify-content-md-end">
+            <form method="post">
+                <button type="submit" value="/posts" class="btn btn-outline-secondary">Write post</button>
+            </form>
+        </div>
         <div class="accordion" id="accordionExample">
             {% for posts in posts %}
                 <div class="accordion-item">
@@ -20,7 +25,8 @@
                             <div class="d-flex flex-row-reverse bd-highlight">
                                 <div class="p-2 bd-highlight">
                                     <form method="get">
-                                        <a href="post/{{ posts['id'] }}" type="button" class="btn btn-outline-success">Read More</a>
+                                        <a href="post/{{ posts['id'] }}" type="button" class="btn btn-outline-success">Read
+                                            More</a>
                                     </form>
                                 </div>
                             </div>

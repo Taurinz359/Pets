@@ -14,6 +14,7 @@ return static function (App $app) {
     $app->get('/login', [LoginController::class, 'showLogin']);
     $app->post('/login', [LoginController::class, 'checkLogin']);
     $app->get('/posts', [PostsController::class,'showPosts']);
+    $app->post('/posts', [PostsController::class,'writePost']);
     $app->get("/post/{id}", [PostsController::class,'showPost']);
 
     $app->get('/register', [RegisterController::class, 'showRegister']);
