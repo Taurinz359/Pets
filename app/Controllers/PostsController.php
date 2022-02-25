@@ -30,10 +30,10 @@ class PostsController
             ]);
     }
 
-    public function showPost(Request $request, Response $response)
+    public function showPost(Request $request, Response $response,array $args)
     {
-        $id = intval(trim($request->getUri()->getPath(), "/post/"));
-        if (!$this->getPostFromDb($id)){
+        $id = $args['id'];
+        if ($this->getPostFromDb($id)) {
             return Twig::fromRequest($request)->render(
                 $response,
                 'error.twig');
@@ -42,19 +42,16 @@ class PostsController
             $response,
             'post.twig',
             [
-                'post' => $this->post
+                'post' => $this->post[0]
             ]
         );
 
     }
 
-    private function getPostFromDb(int $id):bool
+    private function getPostFromDb(int $id): bool
     {
         $this->post = PostsDb::query()->where('id', '=', $id)->get()->toArray();
-        if ($id === 0 || empty($this->post)) {
-            return false;
-        }
-        return true;
+        return ($id === 0 || empty($this->post));
     }
 
     private function getPosts()

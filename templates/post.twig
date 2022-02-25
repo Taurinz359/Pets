@@ -1,0 +1,15 @@
+{% extends 'layout.twig' %}
+{% block content %}
+    <div class="container w-50">
+        <div class="card text-center">
+            <div class="card-header">
+                {{ post['id'] }}
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ post['name'] }}</h5>
+                <p class="card-text">{{ post['content'] }}</p>
+                <a href="/posts" class="btn btn-primary">Go to more posts</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
