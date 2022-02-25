@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Auth;
 use Psr\Container\ContainerInterface;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -13,16 +14,21 @@ class PostsController
     protected ContainerInterface $container;
     private array $postsFromDb;
     private $post;
+    private Auth $auth;
 
+    //todo добавить отображение кнопки логаут
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
+        $this->auth = $this->container->get(Auth::class);
     }
 
     public function writePost(Request $request, Response $response)
     {
         return Twig::fromRequest($request)->render($response,'writePost.twig',[]);
     }
+
+
 
     public function showPosts(Request $request, Response $response)
     {
@@ -31,7 +37,8 @@ class PostsController
             $response,
             'posts.twig',
             [
-                'posts' => $this->postsFromDb
+                'posts' => $this->postsFromDb,
+                'isValidate' => $this->auth->checkToken($request,$response)
             ]);
     }
 
@@ -66,4 +73,10 @@ class PostsController
             $this->postsFromDb[$key]['content'] = mb_strimwidth($value['content'], 0, 100) . '...';
         }
     }
+
+    /**
+     * @param Auth|mixed $auth
+     * @return PostsController
+     */
+
 }

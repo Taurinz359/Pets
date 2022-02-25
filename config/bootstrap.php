@@ -3,6 +3,7 @@
 use App\Controllers\LoginController;
 use App\Auth;
 use App\Controllers\HomeController;
+use App\Controllers\LogoutController;
 use App\Controllers\PostsController;
 use App\Controllers\RegisterController;
 use App\Controllers\Welcome;
@@ -21,6 +22,7 @@ $container->set(Auth::class, fn(ContainerInterface $c) => new Auth($c));
 $container->set(LoginController::class, fn(ContainerInterface $c) => new LoginController($c));
 $container->set(AuthMiddleware::class, fn(ContainerInterface $c) => new AuthMiddleware($c));
 $container->set(RegisterMiddleware::class, fn(ContainerInterface $c) => new RegisterMiddleware($c));
+$container->set(LogoutController::class,fn(ContainerInterface $c) => new LogoutController($c));
 
 $container->set(Validator::class, fn(ContainerInterface $c) => new Validator($c));
 $container->set(Welcome::class, fn(ContainerInterface $c) => new Welcome($c));
