@@ -3,30 +3,31 @@
 namespace App\Controllers;
 
 use App\Auth;
+use App\Validation\Validator;
 use Psr\Container\ContainerInterface;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Slim\Views\Twig;
 use App\Models\Posts as PostsDb;
+use Respect\Validation\Validator as v;
 
-class PostsController
+class PostsController extends Controller
 {
     protected ContainerInterface $container;
     private array $postsFromDb;
     private $post;
-    private Auth $auth;
 
     //todo добавить отображение кнопки логаут
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-        $this->auth = $this->container->get(Auth::class);
-    }
 
     public function createPost(Request $request, Response $response)
     {
-        var_dump($request->getParsedBody());
-
+        $requestData = $request->getParsedBody();
+        $this->validator->validate($requestData,[
+            'name' => v::notEmpty()->length(10,100)->setTemplate('Needs more 10 characters'),
+            'content' => v::notEmpty()->length(100,5000)->setTemplate('Need more 100 characters')
+        ]);
+        $error = $this->validator->getErrors();
+        var_dump($error); die;
         return $response->withHeader('Location','/posts');
     }
 

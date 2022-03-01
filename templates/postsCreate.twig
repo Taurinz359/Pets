@@ -1,16 +1,18 @@
 {% extends 'layout.twig' %}
 {% block content %}
-    <form method="post" action="/posts">
+    <form  method="post" action="/posts">
         <div class=" mb-3 container w-25">
-            <label for="exampleFormControlInput1" class="form-label">Label</label>
-            <input type="text" name="name" value="This Is Label" class="form-control" id="exampleFormControlInput1"
-                   placeholder="My grateful label" required/>
+            <label for="exampleFormControlInput1" class="isform-label">Label</label>
+            <input type="text" name="name" value="This Is Label" class="form-control is-invalid" id="exampleFormControlInput1"
+                   placeholder="My grateful label" >
+            <div class="invalid-feedback">Need more 10 characters</div>
         </div>
         <div class="mb-3 container ">
             <div class="w-50 container">
                 <label for="exampleFormControlTextarea1" class="form-label">Content</label>
-                <textarea class="form-control" name="content" id="exampleFormControlTextarea1" rows="3"
-                          placeholder="Blablabla.." required>My grateful text</textarea>
+                <textarea class="form-control is-invalid" name="content" id="exampleFormControlTextarea1" rows="3"
+                          placeholder="Blablabla.." >My grateful textMy grateful textMy grateful textMy grateful textMy grateful textMy grateful textMy grateful textMy grateful textMy grateful textMy grateful textMy grateful textMy grateful textMy grateful textMy grateful </textarea>
+                <div class="invalid-feedback">Need more 100 characters</div>
                 <div class="mt-5 d-grid gap-2 d-md-flex justify-content-md-end">
                     <input name="draft" value="true" type="checkbox" class="btn-check" id="btn-check-outlined" autocomplete="off">
                     <label class="btn btn-outline-primary" for="btn-check-outlined">Draft</label><br>
