@@ -22,8 +22,8 @@ class PostsController extends Controller
     {
         $requestData = $request->getParsedBody();
         $this->validator->validate($requestData,[
-            'name' => v::notEmpty()->length(10,100)->setTemplate('Needs more 10 characters'),
-            'content' => v::notEmpty()->length(100,5000)->setTemplate('Need more 100 characters')
+            'name' => v::notEmpty()->length(10,100)->setTemplate('Needed more 10 characters'),
+            'content' => v::notEmpty()->length(100,5000)->setTemplate('Needed more 100 characters')
         ]);
         if (empty($this->validator->getErrors())){
             return $response->withHeader('Location','/posts');
