@@ -35,6 +35,7 @@ class Auth
 
     public function checkToken(Request $request, Response $response): bool
     {
+
         if (empty($request->getCookieParams()[md5('TestToken')])) {
             return false;
         }
@@ -47,6 +48,7 @@ class Auth
         if (empty($user) || $cookieValues[1] !== $user->password) {
             return false;
         }
+
         return true;
     }
 }

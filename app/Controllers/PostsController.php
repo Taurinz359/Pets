@@ -25,7 +25,7 @@ class PostsController
 
     public function showCreateForm(Request $request, Response $response)
     {
-        return Twig::fromRequest($request)->render($response,'writePost.twig',[]);
+        return Twig::fromRequest($request)->render($response, 'postsCreate.twig', []);
     }
 
 
@@ -38,17 +38,19 @@ class PostsController
             'posts.twig',
             [
                 'posts' => $this->postsFromDb,
-                'isValidate' => $this->auth->checkToken($request,$response)
-            ]);
+                'isValidate' => $this->auth->checkToken($request, $response)
+            ]
+        );
     }
 
-    public function showPost(Request $request, Response $response,array $args)
+    public function showPost(Request $request, Response $response, array $args)
     {
         $id = $args['id'];
         if ($this->getPostFromDb($id)) {
             return Twig::fromRequest($request)->render(
                 $response,
-                'error.twig');
+                'error.twig'
+            );
         }
         return Twig::fromRequest($request)->render(
             $response,
@@ -57,7 +59,6 @@ class PostsController
                 'post' => $this->post[0]
             ]
         );
-
     }
 
     private function getPostFromDb(int $id): bool
@@ -73,10 +74,8 @@ class PostsController
             $this->postsFromDb[$key]['content'] = mb_strimwidth($value['content'], 0, 100) . '...';
         }
     }
-
     /**
      * @param Auth|mixed $auth
      * @return PostsController
      */
-
 }

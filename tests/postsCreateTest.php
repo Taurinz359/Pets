@@ -3,11 +3,8 @@
 namespace Tests;
 
 use App\Models\User;
-use Dotenv\Dotenv;
 
-use function DI\get;
-
-class HomePageTest extends TestCase
+class postsCreateTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -15,14 +12,14 @@ class HomePageTest extends TestCase
         $this->refreshDatabase();
     }
 
-    public function test_home_rout_without_cookie()
+    public function test_create_route_without_cookie(): void
     {
-        $request = $this->createRequest('GET', '/home');
+        $request = $this->createRequest('GET', '/posts/create');
         $response = $this->app->handle($request);
         $this->assertEquals(301, $response->getStatusCode());
     }
 
-    public function test_home_rout_with_cookie()
+    public function test_create_route_with_cookie()
     {
         $user = User::find(6);
         $cookie = implode(
@@ -34,11 +31,10 @@ class HomePageTest extends TestCase
         );
         $request = $this->createRequest(
             'GET',
-            '/home',
+            '/posts/create',
             ['HTTP_ACCEPT' => 'application/json'],
             ["ce3186f2076d58949b78858d244c3efe" => $cookie]
         );
-
         $response = $this->app->handle($request);
         $this->assertEquals(200, $response->getStatusCode());
     }

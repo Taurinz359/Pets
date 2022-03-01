@@ -14,6 +14,6 @@ class LogoutController extends Controller
     public function logout(Request $request, Response $response)
     {
         $cookie = md5('TestToken') . '=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; Max-Age=0;';
-        return $response->withHeader('Set-Cookie',$cookie)->withStatus(302)->withHeader('Location', '/posts');
+        return $response->withHeader('Set-Cookie', $cookie)->withStatus(302)->withHeader('Location', '/posts');
     }
 }
