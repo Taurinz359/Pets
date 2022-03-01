@@ -23,11 +23,17 @@ class PostsController
         $this->auth = $this->container->get(Auth::class);
     }
 
+    public function createPost(Request $request, Response $response)
+    {
+        var_dump($request->getParsedBody());
+
+        return $response->withHeader('Location','/posts');
+    }
+
     public function showCreateForm(Request $request, Response $response)
     {
         return Twig::fromRequest($request)->render($response, 'postsCreate.twig', []);
     }
-
 
 
     public function showPosts(Request $request, Response $response)

@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\Models\User;
 use Illuminate\Database\Capsule\Manager;
 use Phinx\Config\Config;
 use Phinx\Console\PhinxApplication;
@@ -20,6 +21,7 @@ use Symfony\Component\Console\Output\NullOutput;
 class TestCase extends phpUnit
 {
     protected App $app;
+    protected User $user;
     protected function setUp(): void
     {
         parent::setUp();
@@ -30,6 +32,7 @@ class TestCase extends phpUnit
     {
         exec("cd /app && vendor/bin/phinx migrate -e testing");
         exec("cd /app && vendor/bin/phinx seed:run -e testing");
+        $this->user=User::find(6);
     }
 
     protected function getAppInstance(): App

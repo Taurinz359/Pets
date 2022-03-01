@@ -8,7 +8,7 @@ class RegisterPageTest extends TestCase
 {
     protected function setUp(): void
     {
-        parent::setUp(); //
+        parent::setUp();
         $this->refreshDatabase();
     }
     public function test_post()

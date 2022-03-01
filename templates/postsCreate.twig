@@ -1,16 +1,22 @@
 {% extends 'layout.twig' %}
 {% block content %}
-    <form method="get">
-        <div class="container w-50">
-            <div class=" mb-3 container w-25">
-                <label for="exampleFormControlInput1" class="form-label">Label</label>
-                <input type="text" name="name" class="form-control" id="exampleFormControlInput1" placeholder="My grateful label">
-            </div>
-            <div class="mb-3">
+    <form method="post" action="/posts">
+        <div class=" mb-3 container w-25">
+            <label for="exampleFormControlInput1" class="form-label">Label</label>
+            <input type="text" name="name" value="This Is Label" class="form-control" id="exampleFormControlInput1"
+                   placeholder="My grateful label" required/>
+        </div>
+        <div class="mb-3 container ">
+            <div class="w-50 container">
                 <label for="exampleFormControlTextarea1" class="form-label">Content</label>
-                <textarea class="form-control" name="content" id="exampleFormControlTextarea1" rows="3"></textarea>
+                <textarea class="form-control" name="content" id="exampleFormControlTextarea1" rows="3"
+                          placeholder="Blablabla.." required>My grateful text</textarea>
+                <div class="mt-5 d-grid gap-2 d-md-flex justify-content-md-end">
+                    <input name="draft" value="true" type="checkbox" class="btn-check" id="btn-check-outlined" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="btn-check-outlined">Draft</label><br>
+                    <button class="btn btn-outline-success" type="submit">Save</button>
+                </div>
             </div>
-            <button type="submit" class="btn btn-outline-primary">Primary</button>
         </div>
     </form>
 {% endblock %}

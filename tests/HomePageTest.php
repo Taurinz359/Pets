@@ -24,12 +24,11 @@ class HomePageTest extends TestCase
 
     public function test_home_rout_with_cookie()
     {
-        $user = User::find(6);
         $cookie = implode(
             md5("bottle"),
             [
-                $user->id,
-                $user->password
+                $this->user->id,
+                $this->user->password
             ]
         );
         $request = $this->createRequest(
