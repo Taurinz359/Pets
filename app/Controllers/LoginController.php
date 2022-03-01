@@ -27,7 +27,6 @@ class LoginController extends Controller
             return $this->isSuccessLogin($response, $request, true);
         }
         return $this->isSuccessLogin($response, $request);
-//        todo request to auth
     }
 
     protected function isSuccessLogin(Response $response, Request $request, bool $success = false)

@@ -1,6 +1,16 @@
 {% extends 'layout.twig' %}
 {% block content %}
-    <div class="container w-50">
-        <p>write post</p>
-    </div>
+    <form method="get">
+        <div class="container w-50">
+            <div class=" mb-3 container w-25">
+                <label for="exampleFormControlInput1" class="form-label">Label</label>
+                <input type="text" name="name" class="form-control" id="exampleFormControlInput1" placeholder="My grateful label">
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Content</label>
+                <textarea class="form-control" name="content" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-outline-primary">Primary</button>
+        </div>
+    </form>
 {% endblock %}

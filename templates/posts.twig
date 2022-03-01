@@ -3,9 +3,7 @@
     <div class="container w-50">
         {% if isValidate %}
             <div class="mb-3 d-grid gap-2 d-md-flex justify-content-md-end">
-                <form method="post">
-                    <button type="submit" value="/posts" class="btn btn-outline-secondary">Write post</button>
-                </form>
+                <a href="/posts/create" class="btn btn-outline-secondary">Write post</a>
             </div>
         {% endif %}
         <div class="accordion" id="accordionExample">

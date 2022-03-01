@@ -23,7 +23,7 @@ class PostsController
         $this->auth = $this->container->get(Auth::class);
     }
 
-    public function writePost(Request $request, Response $response)
+    public function showCreateForm(Request $request, Response $response)
     {
         return Twig::fromRequest($request)->render($response,'writePost.twig',[]);
     }
