@@ -1,5 +1,7 @@
 {% extends 'layout.twig' %}
 {% block content %}
+    {{ dump() }}
+{#    todo сделать корректное отображение ошибок #}
     <form  method="post" action="/posts">
         <div class=" mb-3 container w-25">
             <label for="exampleFormControlInput1" class="isform-label">Label</label>

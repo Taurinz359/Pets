@@ -17,18 +17,18 @@ class PostsController extends Controller
     private array $postsFromDb;
     private $post;
 
-    //todo добавить отображение кнопки логаут
 
-    public function createPost(Request $request, Response $response)
+    public function validatePostsData (Request $request, Response $response): Response|\Slim\Psr7\Message|\Psr\Http\Message\ResponseInterface
     {
         $requestData = $request->getParsedBody();
         $this->validator->validate($requestData,[
             'name' => v::notEmpty()->length(10,100)->setTemplate('Needs more 10 characters'),
             'content' => v::notEmpty()->length(100,5000)->setTemplate('Need more 100 characters')
         ]);
-        $error = $this->validator->getErrors();
-        var_dump($error); die;
-        return $response->withHeader('Location','/posts');
+        if (empty($this->validator->getErrors())){
+            return $response->withHeader('Location','/posts');
+        }
+        return Twig::fromRequest($request)->render($response, 'postsCreate.twig',['errors' => $this->validator->getErrors()]);
     }
 
     public function showCreateForm(Request $request, Response $response)
