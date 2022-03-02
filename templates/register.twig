@@ -8,7 +8,8 @@
                 <input type="email" class="form-control
                     {% if errors['email'] is not empty %}
                         {{ " is-invalid" }}
-                    {% endif %}" id="exampleInputEmail1" required name="email" aria-describedby="emailHelp" value="dsds@ds.ru">
+                    {% endif %}" id="exampleInputEmail1" required name="email" aria-describedby="emailHelp"
+                       value="dsds@ds.ru">
                 <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                 <div class="invalid-feedback">
                     {{ errors['email'][0] }}
@@ -27,7 +28,8 @@
             <div class="row g-3 align-items-center">
                 <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" value="1234" required name="password-check">
+                    <input type="password" class="form-control" id="exampleInputPassword1" value="1234" required
+                           name="password-check">
                 </div>
                 <div class="col-auto">
                     <span id="passwordHelpInline" class="form-text">

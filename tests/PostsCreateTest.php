@@ -54,7 +54,7 @@ class PostsCreateTest extends TestCase
         $this->assertEquals(301, $response->getStatusCode());
     }
 
-    public function test_post_posts_route_with_cookie()
+    public function test_post_posts_route_with_empty_body()
     {
         $cookie = implode(
             md5("bottle"),
@@ -70,10 +70,11 @@ class PostsCreateTest extends TestCase
             ["ce3186f2076d58949b78858d244c3efe" => $cookie]
         );
         $response = $this->app->handle($request);
+        $this->assertEquals('/error', $response->getHeaders()['Location'][0]);
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    public function test_save_post_in_db()
+    public function test_post_posts_route_with_cookie()
     {
         $faker = Factory::create();
         $cookie = implode(

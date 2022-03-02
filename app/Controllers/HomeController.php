@@ -9,7 +9,7 @@ use Slim\Views\Twig;
 
 class HomeController extends Controller
 {
-    public function index(Request $request, Response $response): Response
+    public function showHome(Request $request, Response $response): Response
     {
         $user = $this->container->get('auth_user');
         $post = $user->posts();

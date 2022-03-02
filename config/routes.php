@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\ErrorController;
 use App\Controllers\LoginController;
 use App\Controllers\HomeController;
 use App\Controllers\LogoutController;
@@ -19,7 +20,9 @@ return static function (App $app) {
     $app->get('/post/{id}', [PostsController::class, 'showPost']);
     $app->get('/logout', [LogoutController::class,'logout']);
     $app->get('/register', [RegisterController::class, 'showRegister']);
-    $app->get('/home', [HomeController::class, 'index'])->add(new AuthMiddleware($app->getContainer()));
+    $app->get('/home', [HomeController::class, 'showHome'])->add(new AuthMiddleware($app->getContainer()));
+    $app->get('/error', [ErrorController::class, 'showError']);
+
     $app->post('/posts', [PostsController::class, 'validatePostsData'])->add(new AuthMiddleware($app->getContainer()));
     $app->post('/login', [LoginController::class, 'checkLogin']);
     $app->post('/register', [RegisterController::class, 'checkValidate']);
