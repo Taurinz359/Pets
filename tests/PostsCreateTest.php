@@ -96,6 +96,4 @@ class PostsCreateTest extends TestCase
         $response = $this->app->handle($request);
         $this->assertEquals(200, $response->getStatusCode());
     }
-
-
 }

@@ -8,7 +8,7 @@ use Psr\Container\ContainerInterface;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Slim\Views\Twig;
-use App\Models\Posts as PostsDb;
+use App\Models\Post as PostsDb;
 use Respect\Validation\Validator as v;
 
 class PostsController extends Controller
@@ -18,17 +18,17 @@ class PostsController extends Controller
     private $post;
 
 
-    public function validatePostsData (Request $request, Response $response): Response|\Slim\Psr7\Message|\Psr\Http\Message\ResponseInterface
+    public function validatePostsData(Request $request, Response $response): Response|\Slim\Psr7\Message|\Psr\Http\Message\ResponseInterface
     {
         $requestData = $request->getParsedBody();
-        $this->validator->validate($requestData,[
-            'name' => v::notEmpty()->length(10,100)->setTemplate('Needs more 10 characters'),
-            'content' => v::notEmpty()->length(100,5000)->setTemplate('Need more 100 characters')
+        $this->validator->validate($requestData, [
+            'name' => v::notEmpty()->length(10, 100)->setTemplate('Needs more 10 characters'),
+            'content' => v::notEmpty()->length(100, 5000)->setTemplate('Need more 100 characters')
         ]);
-        if (empty($this->validator->getErrors())){
-            return $response->withHeader('Location','/posts');
+        if (empty($this->validator->getErrors())) {
+            return $response->withHeader('Location', '/posts');
         }
-        return Twig::fromRequest($request)->render($response, 'postsCreate.twig',['errors' => $this->validator->getErrors()]);
+        return Twig::fromRequest($request)->render($response, 'postsCreate.twig', ['errors' => $this->validator->getErrors()]);
     }
 
     public function showCreateForm(Request $request, Response $response)

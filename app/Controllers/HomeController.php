@@ -11,6 +11,9 @@ class HomeController extends Controller
 {
     public function index(Request $request, Response $response): Response
     {
+        $user = $this->container->get('auth_user');
+        $post = $user->posts();
+        var_dump($user->posts->toArray());
         return Twig::fromRequest($request)->render(
             $response,
             'home.twig',

@@ -26,9 +26,12 @@ final class V20220128094317 extends AbstractMigration
         $table->save();
 
         $table = $this->table('posts');
-        $table->addColumn('name', 'string')
+
+        $table
+            ->addColumn('user_id','integer')->addForeignKey('user_id','users','id')
+            ->addColumn('name', 'string')
             ->addColumn('content', 'text')
-            ->addColumn('posted', 'integer')
+            ->addColumn('status', 'smallinteger')
             ->create();
         $table->save();
     }

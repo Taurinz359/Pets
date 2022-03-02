@@ -32,7 +32,7 @@ class TestCase extends phpUnit
     {
         exec("cd /app && vendor/bin/phinx migrate -e testing");
         exec("cd /app && vendor/bin/phinx seed:run -e testing");
-        $this->user=User::find(6);
+        $this->user = User::find(6);
     }
 
     protected function getAppInstance(): App

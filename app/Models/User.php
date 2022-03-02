@@ -12,4 +12,9 @@ class User extends Model
         'password'
     ];
     protected $hidden = ['password'];
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
 }
