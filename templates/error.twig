@@ -1,20 +1,56 @@
-{% extends "layout.twig" %}
-{% block content %}
-
+<!DOCTYPE html>
+<html lang="eu">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        Error
+    </title>
+    <link rel="stylesheet" href="/css/errorPage.css"/>
+</head>
+<html>
 <body>
-	<link type="text/css" rel="stylesheet" href=".style.css" />
-	<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-	<div id="notfound">
-		<div class="notfound">
-			<div class="notfound-404">
-				<h1>404</h1>
-				<h2>Page not found</h2>
-			</div>
-			<a href="#">Homepage</a>
-		</div>
-	</div>
+<a href="/posts">
+    <header class="top-header">
+    </header>
+
+    <!--dust particel-->
+    <div>
+        <div class="starsec"></div>
+        <div class="starthird"></div>
+        <div class="starfourth"></div>
+        <div class="starfifth"></div>
+    </div>
+    <!--Dust particle end--->
+
+
+    <div class="lamp__wrap">
+        <div class="lamp">
+            <div class="cable"></div>
+            <div class="cover"></div>
+            <div class="in-cover">
+                <div class="bulb"></div>
+            </div>
+            <div class="light"></div>
+        </div>
+    </div>
+    <!-- END Lamp -->
+    <section class="error">
+        <!-- Content -->
+        <div class="error__content">
+            <div class="error__message message">
+                <h1 class="message__title">Page Not Found</h1>
+                <p class="message__text">We're sorry, the page you were looking for isn't found here. The link you
+                    followed may either be broken or no longer exists. Please try again, or take a look at our.</p>
+            </div>
+            <div class="error__nav e-nav">
+                <a href="/posts" class="e-nav__link"></a>
+            </div>
+        </div>
+        <!-- END Content -->
+
+    </section>
+
+</a>
 
 </body>
-
-{% endblock %}
+</html>

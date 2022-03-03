@@ -13,7 +13,7 @@ class HomeController extends Controller
     {
         $user = $this->container->get('auth_user');
         $post = $user->posts();
-        var_dump($user->posts->toArray());
+//        var_dump($user->posts->toArray());
         return Twig::fromRequest($request)->render(
             $response,
             'home.twig',
