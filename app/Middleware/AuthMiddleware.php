@@ -36,7 +36,7 @@ class AuthMiddleware
 
         $cookie = md5('TestToken') . '=deleted; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; Max-Age=0;';
         $response = new \Slim\Psr7\Response();
-        return $response->withHeader('Location', '/')->
+        return $response->withHeader('Location', '/error')->
         withHeader('Set-Cookie', $cookie)->
         withStatus(301);
     }

@@ -20,9 +20,6 @@ class PostsController extends Controller
     public function validatePostsData(Request $request, Response $response): Response|\Slim\Psr7\Message|\Psr\Http\Message\ResponseInterface
     {
         $requestData = $request->getParsedBody();
-        if (empty($requestData)) {
-            return $response->withHeader('Location','/error')->withStatus(401);
-        }
 
         if (!empty($requestData)) {
             $this->validator->validate($requestData, [
@@ -31,16 +28,11 @@ class PostsController extends Controller
             ]);
             $errors = $this->validator->getErrors();
             if (empty($errors)) {
-
                 return $response->withHeader('Location', '/posts');
             }
             return Twig::fromRequest($request)->render($response, 'postsCreate.twig', ['errors' => $errors]);
         }
-        return Twig::fromRequest($request)->render($response, 'postsCreate.twig', ['errors' =>
-            [
-                'name' => 'mmm.. danone',
-                'content' => 'mmm.. idiot'
-            ]]);
+        return $response->withHeader('Location', '/error')->withStatus(401);
     }
 
     public function showCreateForm(Request $request, Response $response)

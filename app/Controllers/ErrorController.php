@@ -10,6 +10,6 @@ class ErrorController extends Controller
 {
     public function showError(Request $request, Response $response,)
     {
-        return Twig::fromRequest($request)->render($response,'error.twig');
+        return Twig::fromRequest($request)->render($response, 'error.twig');
     }
 }
