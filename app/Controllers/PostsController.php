@@ -3,7 +3,9 @@
 namespace App\Controllers;
 
 use App\Auth;
+use App\Models\Post;
 use App\Models\Post as PostsDb;
+use App\Models\User;
 use Psr\Container\ContainerInterface;
 use Respect\Validation\Validator as v;
 use Slim\Psr7\Request;
@@ -20,7 +22,6 @@ class PostsController extends Controller
     public function validatePostsData(Request $request, Response $response): Response|\Slim\Psr7\Message|\Psr\Http\Message\ResponseInterface
     {
         $requestData = $request->getParsedBody();
-
         if (!empty($requestData)) {
             $this->validator->validate($requestData, [
                 'name' => v::notEmpty()->length(10, 100)->setTemplate('Needs more 10 characters'),
@@ -28,11 +29,19 @@ class PostsController extends Controller
             ]);
             $errors = $this->validator->getErrors();
             if (empty($errors)) {
+                $this->createPostInDb($requestData);
                 return $response->withHeader('Location', '/posts');
             }
             return Twig::fromRequest($request)->render($response, 'postsCreate.twig', ['errors' => $errors]);
         }
         return $response->withHeader('Location', '/error')->withStatus(401);
+    }
+
+    private function createPostInDb ($data)
+    {
+
+        $statsPost= empty($data['draft']) ? Post::STATUS_PUBLISHED : Post::STATUS_DRAFT;
+        var_dump($statsPost);
     }
 
     public function showCreateForm(Request $request, Response $response)

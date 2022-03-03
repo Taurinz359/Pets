@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\Models\Post;
 use App\Models\User;
 use Faker\Factory;
 use Faker\Provider\Text;
@@ -93,8 +94,36 @@ class PostsCreateTest extends TestCase
             'name' => $faker->realText(10),
             'content' => $faker->realtext(100),
         ]);
+        $postsCount = Post::all()->count();
 
         $response = $this->app->handle($request);
         $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(7, Post::all()->count());
+    }
+
+    public function test_post_posts_route_with_cookie_draft()
+    {
+        $faker = Factory::create();
+        $cookie = implode(
+            md5("bottle"),
+            [
+                $this->user->id,
+                $this->user->password
+            ]
+        );
+        $request = $this->createRequest(
+            'POST',
+            '/posts',
+            ['HTTP_ACCEPT' => 'application/json'],
+            ["ce3186f2076d58949b78858d244c3efe" => $cookie]
+        )->withParsedBody([
+            'name' => $faker->realText(100, 5 ),
+            'content' => $faker->realtext(1000, 2),
+            'draft' => 'true'
+        ]);
+
+        $response = $this->app->handle($request);
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(7, Post::all()->count());
     }
 }

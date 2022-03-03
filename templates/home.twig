@@ -15,26 +15,33 @@
             src="https://kit.fontawesome.com/eff169ac44.js"
             crossorigin="anonymous"
     ></script>
-{#     {{ dump() }}#}
-    <section>
-        <details open>
-            <summary>Carl Gustav Jung</summary>
-            <div>
-                <div class=" mt-3">
-                    <i class="fa-solid fa-xs fa-box-archive">Draft</i>
+{#    {{ dump() }}#}
+    {% for post in posts %}
+        <section>
+            <details closed>
+                <summary>{{ post['name'] }}</summary>
+                <div>
+                    {% if post['status'] == 1 %}
+                        <div class=" mt-3">
+                            <i class="fa-solid  fa-xs fa-box-archive">Draft</i>
+                        </div>
+                    {% else %}
+                        <div class="mt-3">
+                            <i class="fa-solid fa-xs fa-paper-plane">Posted</i>
+                        </div>
+                    {% endif %}
+                    <p>
+                        {{ post['content'] }}
+                    </p>
+                    {% if post['status'] == 1 %}
+                        <div class="container d-flex justify-content-end">
+                            <a href="/posts/{{ post['id'] }}" type="button" class="btn btn-outline-success">Draft</a>
+                        </div>
+                    {% endif %}
                 </div>
-                <p>
-                    The Swiss psychologist and psychiatrist Carl Jung was one of
-                    the major forces responsible for bringing psychological
-                    (having to do with the mind and its processes) thought and
-                    its theories into the twentieth century.
-                </p>
-                <div class="container">
-                    <button type="button" class="btn btn-outline-success">Post</button>
-                </div>
-            </div>
 
-        </details>
-    </section>
+            </details>
+        </section>
+    {% endfor %}
     </body>
 {% endblock %}
