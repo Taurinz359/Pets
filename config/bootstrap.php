@@ -9,7 +9,7 @@ use App\Controllers\PostsController;
 use App\Controllers\RegisterController;
 use App\Controllers\Welcome;
 use App\Middleware\AuthMiddleware;
-use App\Middleware\RegisterMiddleware;
+use App\Middleware\DeleteTokenMiddleware;
 use App\Validation\Validator;
 use DI\Container;
 use Psr\Container\ContainerInterface;
@@ -22,7 +22,7 @@ $container->set(PostsController::class, fn(ContainerInterface $c) => new PostsCo
 $container->set(Auth::class, fn(ContainerInterface $c) => new Auth($c));
 $container->set(LoginController::class, fn(ContainerInterface $c) => new LoginController($c));
 $container->set(AuthMiddleware::class, fn(ContainerInterface $c) => new AuthMiddleware($c));
-$container->set(RegisterMiddleware::class, fn(ContainerInterface $c) => new RegisterMiddleware($c));
+$container->set(DeleteTokenMiddleware::class, fn(ContainerInterface $c) => new DeleteTokenMiddleware($c));
 $container->set(LogoutController::class, fn(ContainerInterface $c) => new LogoutController($c));
 
 $container->set(ErrorController::class, fn(ContainerInterface $c)=> new ErrorController($c));

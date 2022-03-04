@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Auth;
 use App\Middleware\AuthMiddleware;
+use App\Middleware\DeleteTokenMiddleware;
 use App\Models\User;
 use Psr\Container\ContainerInterface;
 use Slim\Psr7\Request;

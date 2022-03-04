@@ -8,14 +8,14 @@ use App\Controllers\PostsController;
 use App\Controllers\RegisterController as RegisterController;
 use App\Controllers\Welcome;
 use App\Middleware\AuthMiddleware;
-use App\Middleware\RegisterMiddleware;
+use App\Middleware\DeleteTokenMiddleware;
 use Slim\App;
 
 return static function (App $app) {
     $app->redirect('/', '/posts');
 
     $app->get('/posts', [PostsController::class,'showPosts']);
-    $app->get('/login', [LoginController::class, 'showLogin']);
+    $app->get('/login', [LoginController::class, 'showLogin'])->add(new DeleteTokenMiddleware($app->getContainer()));
     $app->get('/posts/create', [PostsController::class, 'showCreateForm'])->add(new AuthMiddleware($app->getContainer()));
     $app->get('/post/{id}', [PostsController::class, 'showPost']);
     $app->get('/logout', [LogoutController::class,'logout']);

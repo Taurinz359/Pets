@@ -8,7 +8,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
-class RegisterMiddleware
+class DeleteTokenMiddleware
 {
     private ContainerInterface $container;
     private Auth $auth;

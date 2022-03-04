@@ -15,7 +15,7 @@
             src="https://kit.fontawesome.com/eff169ac44.js"
             crossorigin="anonymous"
     ></script>
-{#    {{ dump() }}#}
+    {#    {{ dump() }} #}
     {% for post in posts %}
         <section>
             <details closed>
@@ -35,7 +35,8 @@
                     </p>
                     {% if post['status'] == 1 %}
                         <div class="container d-flex justify-content-end">
-                            <a href="/posts/{{ post['id'] }}" type="button" class="btn btn-outline-success">Draft</a>
+                            <a style="width: 100px; height: 40px;" href="/post/{{ post['id'] }}" type="button"
+                               class="btn btn-outline-success">Draft</a>
                         </div>
                     {% endif %}
                 </div>

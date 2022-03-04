@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Auth;
+use App\Models\Post;
 use App\Models\Post as PostsDb;
 use Psr\Container\ContainerInterface;
 use Respect\Validation\Validator as v;
@@ -15,7 +16,7 @@ class PostsController extends Controller
     protected ContainerInterface $container;
     private array $postsFromDb;
     private $post;
-
+    protected $authUser;
 
     public function validatePostsData(Request $request, Response $response): Response|\Slim\Psr7\Message|\Psr\Http\Message\ResponseInterface
     {
@@ -71,30 +72,48 @@ class PostsController extends Controller
     public function showPost(Request $request, Response $response, array $args)
     {
         $id = $args['id'];
-        if ($this->getPostFromDb($id)) {
+
+        if ($this->validatePostId($id, $request)) {
             return Twig::fromRequest($request)->render(
                 $response,
-                'error.twig'
-            );
+                'post.twig',
+                [
+                    'post' => $this->post[0]
+                ]);
         }
+
         return Twig::fromRequest($request)->render(
             $response,
-            'post.twig',
-            [
-                'post' => $this->post[0]
-            ]
+            'error.twig'
         );
+    }
+
+    private function validatePostId(int $id, Request $request): bool
+    {
+        if ($this->getPostFromDb($id)) {
+            if ($this->post[0]['status'] !== Post::STATUS_DRAFT) {
+                return true;
+            }
+            $this->authUser = $this->container->get(Auth::class);
+            if ($this->authUser->checkToken($request)) {
+                $user = $this->container->get('auth_user');
+                if (!empty($user->posts->where('id', '=', $id)->toArray())){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private function getPostFromDb(int $id): bool
     {
         $this->post = PostsDb::query()->where('id', '=', $id)->get()->toArray();
-        return ($id === 0 || empty($this->post));
+        return !($id === 0 || empty($this->post));
     }
 
     private function getPublicPosts()
     {
-        $posts = array_filter(PostsDb::all()->toArray(), fn($i)=> $i['status'] !== PostsDb::STATUS_DRAFT );
+        $posts = array_filter(PostsDb::all()->toArray(), fn($i) => $i['status'] !== PostsDb::STATUS_DRAFT);
         foreach ($posts as $key => $value) {
             $posts[$key]['content'] = mb_strimwidth($value['content'], 0, 100) . '...';
         }
