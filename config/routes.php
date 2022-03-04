@@ -26,4 +26,6 @@ return static function (App $app) {
     $app->post('/posts', [PostsController::class, 'validatePostsData'])->add(new AuthMiddleware($app->getContainer()));
     $app->post('/login', [LoginController::class, 'checkLogin']);
     $app->post('/register', [RegisterController::class, 'checkValidate']);
+
+
 };

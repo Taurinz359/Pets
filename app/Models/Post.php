@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
+    public $timestamps = false;
+    const  UPDATED_AT = false;
+
     public const STATUS_DRAFT = 1;
     public const STATUS_PUBLISHED = 2;
 

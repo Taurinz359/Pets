@@ -3,9 +3,7 @@
 namespace Tests;
 
 use App\Models\Post;
-use App\Models\User;
 use Faker\Factory;
-use Faker\Provider\Text;
 
 class PostsCreateTest extends TestCase
 {
@@ -75,6 +73,7 @@ class PostsCreateTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
     }
 
+
     public function test_post_posts_route_with_cookie()
     {
         $faker = Factory::create();
@@ -91,14 +90,16 @@ class PostsCreateTest extends TestCase
             ['HTTP_ACCEPT' => 'application/json'],
             ["ce3186f2076d58949b78858d244c3efe" => $cookie]
         )->withParsedBody([
-            'name' => $faker->realText(10),
-            'content' => $faker->realtext(100),
+            'name' => $faker->realText(100),
+            'content' => $faker->realtext(1000),
         ]);
-        $postsCount = Post::all()->count();
-
         $response = $this->app->handle($request);
+        $postsCount = Post::all()->count();
+        $draft = Post::where('id', '=', '7')->get()->toArray()[0]['status'];
+
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals(7, Post::all()->count());
+        $this->assertEquals(2, $draft);
     }
 
     public function test_post_posts_route_with_cookie_draft()
@@ -117,13 +118,14 @@ class PostsCreateTest extends TestCase
             ['HTTP_ACCEPT' => 'application/json'],
             ["ce3186f2076d58949b78858d244c3efe" => $cookie]
         )->withParsedBody([
-            'name' => $faker->realText(100, 5 ),
+            'name' => $faker->realText(100, 5),
             'content' => $faker->realtext(1000, 2),
             'draft' => 'true'
         ]);
-
         $response = $this->app->handle($request);
+        $draft = Post::where('id', '=', '7')->get()->toArray()[0]['status'];
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals(7, Post::all()->count());
+        $this->assertEquals(1, $draft);
     }
 }

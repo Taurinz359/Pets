@@ -3,9 +3,7 @@
 namespace App\Controllers;
 
 use App\Auth;
-use App\Models\Post;
 use App\Models\Post as PostsDb;
-use App\Models\User;
 use Psr\Container\ContainerInterface;
 use Respect\Validation\Validator as v;
 use Slim\Psr7\Request;
@@ -37,11 +35,17 @@ class PostsController extends Controller
         return $response->withHeader('Location', '/error')->withStatus(401);
     }
 
-    private function createPostInDb ($data)
+    private function createPostInDb($data)
     {
 
-        $statsPost= empty($data['draft']) ? Post::STATUS_PUBLISHED : Post::STATUS_DRAFT;
-        var_dump($statsPost);
+        $statsPost = empty($data['draft']) ? PostsDb::STATUS_PUBLISHED : PostsDb::STATUS_DRAFT;
+        $userId = $this->container->get("auth_user")->toArray()['id'];
+        PostsDb::create([
+            'user_id' => $userId,
+            'name' => $data['name'],
+            'content' => $data['content'],
+            'status' => $statsPost
+        ])->save();
     }
 
     public function showCreateForm(Request $request, Response $response)
@@ -52,7 +56,8 @@ class PostsController extends Controller
 
     public function showPosts(Request $request, Response $response)
     {
-        $this->getPosts();
+        $this->getPublicPosts();
+
         return Twig::fromRequest($request)->render(
             $response,
             'posts.twig',
@@ -87,12 +92,13 @@ class PostsController extends Controller
         return ($id === 0 || empty($this->post));
     }
 
-    private function getPosts()
+    private function getPublicPosts()
     {
-        $this->postsFromDb = PostsDb::all()->toArray();
-        foreach ($this->postsFromDb as $key => $value) {
-            $this->postsFromDb[$key]['content'] = mb_strimwidth($value['content'], 0, 100) . '...';
+        $posts = array_filter(PostsDb::all()->toArray(), fn($i)=> $i['status'] !== PostsDb::STATUS_DRAFT );
+        foreach ($posts as $key => $value) {
+            $posts[$key]['content'] = mb_strimwidth($value['content'], 0, 100) . '...';
         }
+        $this->postsFromDb = $posts;
     }
     /**
      * @param Auth|mixed $auth
