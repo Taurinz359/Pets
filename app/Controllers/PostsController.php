@@ -16,7 +16,7 @@ class PostsController extends Controller
     protected ContainerInterface $container;
     private array $postsFromDb;
     private $post;
-    protected $authUser;
+    protected $Auth;
 
     public function validatePostsData(Request $request, Response $response): Response|\Slim\Psr7\Message|\Psr\Http\Message\ResponseInterface
     {
@@ -72,7 +72,6 @@ class PostsController extends Controller
     public function showPost(Request $request, Response $response, array $args)
     {
         $id = $args['id'];
-
         if ($this->validatePostId($id, $request)) {
             return Twig::fromRequest($request)->render(
                 $response,
@@ -90,18 +89,23 @@ class PostsController extends Controller
 
     private function validatePostId(int $id, Request $request): bool
     {
-        if ($this->getPostFromDb($id)) {
-            if ($this->post[0]['status'] !== Post::STATUS_DRAFT) {
-                return true;
-            }
-            $this->authUser = $this->container->get(Auth::class);
-            if ($this->authUser->checkToken($request)) {
-                $user = $this->container->get('auth_user');
-                if (!empty($user->posts->where('id', '=', $id)->toArray())){
-                    return true;
-                }
-            }
+        if (!$this->getPostFromDb($id)) {
+            return false;
         }
+        if ($this->post[0]['status'] !== Post::STATUS_DRAFT) {
+            return true;
+        }
+        $this->Auth = $this->container->get(Auth::class);
+        if (!$this->Auth->checkToken($request)) {
+            return false;
+        }
+
+        $user = $this->container->get('auth_user');
+
+        if ($user->posts()->where('id', '=', $id)->exists()) {
+            return true;
+        }
+
         return false;
     }
 
