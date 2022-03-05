@@ -20,11 +20,10 @@ class LoginMiddleware
     {
         if($this->isLoginUser($request->getCookieParams())){
             $response = $handler->handle($request);
-            return $response->withStatus(301,'IsLogin')->withHeader('Location','/home');
+            return $response->withStatus(301,'IsLogin')->withHeader('Location','/posts')->withHeader("Cache-Control", 'no-cache, no-store, must-revalidate')->withHeader('Pragma' , 'no-cache')->withHeader('Expires','0');
         }
         $response = $handler->handle($request);
-//        var_dump($response); die;
-        return $response;
+        return $response->withHeader("Cache-Control", 'no-cache, no-store, must-revalidate')->withHeader('Pragma' , 'no-cache')->withHeader('Expires','0');
     }
 
     public function isLoginUser (array $requsetData)
