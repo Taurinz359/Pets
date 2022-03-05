@@ -15,7 +15,7 @@ return static function (App $app) {
     $app->redirect('/', '/posts');
 
     $app->get('/posts', [PostsController::class,'showPosts']);
-    $app->get('/login', [LoginController::class, 'showLogin'])->add(new DeleteTokenMiddleware($app->getContainer()));
+    $app->get('/login', [LoginController::class, 'showLogin']);
     $app->get('/posts/create', [PostsController::class, 'showCreateForm'])->add(new AuthMiddleware($app->getContainer()));
     $app->get('/post/{id}', [PostsController::class, 'showPost']);
     $app->get('/logout', [LogoutController::class,'logout']);
