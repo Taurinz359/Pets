@@ -34,9 +34,11 @@
                         {{ post['content'] }}
                     </p>
                     {% if post['status'] == 1 %}
-                        <div class="container d-flex justify-content-end">
+                        <div class="container justify-content-end">
                             <a style="width: 100px; height: 40px;" href="/post/{{ post['id'] }}" type="button"
-                               class="btn btn-outline-success">Draft</a>
+                               class="btn btn-outline-success">View</a>
+                            <a style="margin-left: 10px; width: 100px; height: 40px;"  href="/post/{{ post['id'] }}/edit" type="button"
+                               class="btn btn-outline-warning">Draft</a>
                         </div>
                     {% endif %}
                 </div>

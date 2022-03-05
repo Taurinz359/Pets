@@ -22,6 +22,8 @@ return static function (App $app) {
     $app->get('/logout', [LogoutController::class,'logout']);
     $app->get('/register', [RegisterController::class, 'showRegister']);
     $app->get('/home', [HomeController::class, 'showHome'])->add(new AuthMiddleware($app->getContainer()));
+    $app->get('/post/{id}/edit',[PostsController::class, 'showEditPost'])->add(new AuthMiddleware($app->getContainer()));
+
     $app->get('/error', [ErrorController::class, 'showError']);
 
     $app->post('/posts', [PostsController::class, 'validatePostsData'])->add(new AuthMiddleware($app->getContainer()));

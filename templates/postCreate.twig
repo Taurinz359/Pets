@@ -1,7 +1,6 @@
 {% extends 'layout.twig' %}
 {% block content %}
-{#    {{ dump() }}#}
-    {#    todo сделать корректное отображение ошибок #}
+    {{ dump() }}
     <form method="post" action="/posts">
         <div class=" mb-3 container w-25">
             <label for="exampleFormControlInput1" class="isform-label">Label</label>
@@ -13,8 +12,10 @@
         <div class="mb-3 container ">
             <div class="w-50 container">
                 <label for="exampleFormControlTextarea1" class="form-label">Content</label>
-                <textarea class="form-control {% if errors['content']%} {{ "is-invalid" }} {% endif %}" name="content" id="exampleFormControlTextarea1" rows="3"
-                          placeholder="Blablabla..">Blablabla.. Blablabla.. Blablabla.. Blablabla.. Blablabla..Blablabla.. Blablabla.. Blablabla.. Blablabla.. Blablabla..Blablabla.. Blablabla.. Blablabla.. Blablabla.. Blablabla..</textarea>
+                <textarea class="form-control
+                    {% if errors['content']%} {{ "is-invalid" }} {% endif %}" name="content" id="exampleFormControlTextarea1" rows="3"
+                          placeholder="Blablabla..">Blablabla.. Blablabla.. Blablabla.. Blablabla.. Blablabla..Blablabla.. Blablabla.. Blablabla.. Blablabla.. Blablabla..Blablabla.. Blablabla.. Blablabla.. Blablabla.. Blablabla..
+                </textarea>
                 <div class="invalid-feedback">{{ errors['content'][0] }}</div>
                 <div class="mt-5 d-grid gap-2 d-md-flex justify-content-md-end">
                     <input name="draft" value="true" type="checkbox" class="btn-check" id="btn-check-outlined" autocomplete="off">

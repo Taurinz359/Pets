@@ -31,7 +31,7 @@ class PostsController extends Controller
                 $this->createPostInDb($requestData);
                 return $response->withHeader('Location', '/posts');
             }
-            return Twig::fromRequest($request)->render($response, 'postsCreate.twig', ['errors' => $errors]);
+            return Twig::fromRequest($request)->render($response, 'postCreate.twig', ['errors' => $errors]);
         }
         return $response->withHeader('Location', '/error')->withStatus(401);
     }
@@ -51,7 +51,7 @@ class PostsController extends Controller
 
     public function showCreateForm(Request $request, Response $response)
     {
-        return Twig::fromRequest($request)->render($response, 'postsCreate.twig', []);
+        return Twig::fromRequest($request)->render($response, 'postCreate.twig', []);
     }
 
 
@@ -67,6 +67,16 @@ class PostsController extends Controller
                 'isValidate' => $this->auth->checkToken($request, $response)
             ]
         );
+    }
+
+    public function showEditPost(Request $request, Response $response, array $args)
+    {
+        $postId = $args['id'];
+        $user = $this->container->get('auth_user');
+        if (!$user->posts()->where('id', '=', $postId )->exists() || !$this->getPostFromDb($postId)) {
+            return $response->withHeader('Location', '/error');
+        }
+        return Twig::fromRequest($request)->render($response,'postCreate.twig',['postData' => $this->post]);
     }
 
     public function showPost(Request $request, Response $response, array $args)
