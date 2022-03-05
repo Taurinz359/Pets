@@ -10,6 +10,7 @@ use App\Controllers\RegisterController;
 use App\Controllers\Welcome;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\DeleteTokenMiddleware;
+use App\Middleware\LoginMiddleware;
 use App\Validation\Validator;
 use DI\Container;
 use Psr\Container\ContainerInterface;
@@ -24,6 +25,8 @@ $container->set(LoginController::class, fn(ContainerInterface $c) => new LoginCo
 $container->set(AuthMiddleware::class, fn(ContainerInterface $c) => new AuthMiddleware($c));
 $container->set(DeleteTokenMiddleware::class, fn(ContainerInterface $c) => new DeleteTokenMiddleware($c));
 $container->set(LogoutController::class, fn(ContainerInterface $c) => new LogoutController($c));
+$container->set(LoginMiddleware::class, fn(ContainerInterface $c) =>
+new  LoginMiddleware(($c)));
 
 $container->set(ErrorController::class, fn(ContainerInterface $c)=> new ErrorController($c));
 

@@ -23,8 +23,6 @@ class LoginController extends Controller
     {
         $requestData = $request->getParsedBody();
         $userData = User::where('email', $requestData['email'])->first();
-        $cookie = md5('TestToken') . '=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; Max-Age=0;';
-        $response->withHeader('Set_Cookie',$cookie);
         if (!empty($userData) && password_verify($requestData['password'], $userData->password)) {
             $response = $this->auth->attempt($userData, $request, $response);
             return $this->isSuccessLogin($response, $request, true);

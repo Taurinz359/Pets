@@ -9,13 +9,14 @@ use App\Controllers\RegisterController as RegisterController;
 use App\Controllers\Welcome;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\DeleteTokenMiddleware;
+use App\Middleware\LoginMiddleware;
 use Slim\App;
 
 return static function (App $app) {
     $app->redirect('/', '/posts');
 
     $app->get('/posts', [PostsController::class,'showPosts']);
-    $app->get('/login', [LoginController::class, 'showLogin']);
+    $app->get('/login', [LoginController::class, 'showLogin'])->add(new LoginMiddleware($app->getContainer()));
     $app->get('/posts/create', [PostsController::class, 'showCreateForm'])->add(new AuthMiddleware($app->getContainer()));
     $app->get('/post/{id}', [PostsController::class, 'showPost']);
     $app->get('/logout', [LogoutController::class,'logout']);
@@ -24,7 +25,7 @@ return static function (App $app) {
     $app->get('/error', [ErrorController::class, 'showError']);
 
     $app->post('/posts', [PostsController::class, 'validatePostsData'])->add(new AuthMiddleware($app->getContainer()));
-    $app->post('/login', [LoginController::class, 'checkLogin']);
+    $app->post('/login', [LoginController::class, 'checkLogin'])->add(new LoginMiddleware($app->getContainer()));
     $app->post('/register', [RegisterController::class, 'checkValidate']);
 
 

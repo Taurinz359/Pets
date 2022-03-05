@@ -12,6 +12,7 @@ class HomeController extends Controller
     public function showHome(Request $request, Response $response): Response
     {
         $user = $this->container->get('auth_user');
+//        var_dump($user->posts->toArray()); die;
         $posts = $user->posts->toArray();
         return Twig::fromRequest($request)->render(
             $response,
