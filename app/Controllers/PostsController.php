@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Auth;
 use App\Models\Post;
 use App\Models\Post as PostsDb;
+use App\Models\User;
 use Psr\Container\ContainerInterface;
 use Respect\Validation\Validator as v;
 use Slim\Psr7\Request;
@@ -34,6 +35,21 @@ class PostsController extends Controller
             return Twig::fromRequest($request)->render($response, 'postCreate.twig', ['errors' => $errors]);
         }
         return $response->withHeader('Location', '/error')->withStatus(401);
+    }
+
+    public function deletePost(Request $request, Response $response, array $args)
+    {
+        $postId = $args['id'];
+        $authUser = $this->container->get('auth_user');
+        $postFromDb  = $authUser->Posts()->where('id','=',$postId)->get()->toArray();
+        if (empty($postFromDb)){
+            $response->withAddedHeader('Location','/error');
+        }
+        $delete = $authUser->Posts()->where('id','=',$postId)->delete();
+        if ($delete !== 1 ){
+            $response->withAddedHeader('Location','/error');
+        }
+        return $response->withAddedHeader('Location','/home');
     }
 
     private function createPostInDb($data)
@@ -73,11 +89,8 @@ class PostsController extends Controller
     {
         $postId = $args['id'];
         $user = $this->container->get('auth_user');
-        if (
-            !$user->posts()->where('id', '=', $postId)->exists() ||
-            !$this->getPostFromDb($postId) ||
-            $this->post[0]['status'] === 2
-        ) {
+        $postFromDb = $user->posts()->where('id', '=', $postId)->get()->toArray();
+        if ( empty($postFromDb) || $postFromDb[0]['status'] !== 1) {
             return $response->withHeader('Location', '/error');
         }
         return Twig::fromRequest($request)->render($response, 'postCreate.twig', ['postData' => $this->post]);

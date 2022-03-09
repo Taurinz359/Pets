@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\Models\Post;
 use function DI\string;
 
 class PostEditTest extends TestCase
@@ -57,5 +58,44 @@ class PostEditTest extends TestCase
         );
         $response = $this->app->handle($request);
         $this->assertEquals('/error', $response->getHeaders()['Location'][0]);
+    }
+
+    public function test_delete_post_route()
+    {
+        $cookie = implode(
+            md5("bottle"),
+            [
+                $this->user->id,
+                $this->user->password
+            ]
+        );
+        $request = $this->createRequest(
+            'DELETE',
+            '/post/7',
+            ['HTTP_ACCEPT' => 'application/json'],
+            ["ce3186f2076d58949b78858d244c3efe" => $cookie]
+        );
+        $response = $this->app->handle($request);
+        $lastPost = Post::where('id','=','7')->get()->toArray();
+        $this->assertEquals(true,empty($lastPost));
+    }
+    public function test_delete_post_route_incorrect_id()
+    {
+        $cookie = implode(
+            md5("bottle"),
+            [
+                $this->user->id,
+                $this->user->password
+            ]
+        );
+        $request = $this->createRequest(
+            'DELETE',
+            '/post/1',
+            ['HTTP_ACCEPT' => 'application/json'],
+            ["ce3186f2076d58949b78858d244c3efe" => $cookie]
+        );
+        $response = $this->app->handle($request);
+        $lastPost = Post::where('id','=','1')->get()->toArray();
+        $this->assertEquals(false,empty($lastPost));
     }
 }
