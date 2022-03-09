@@ -73,10 +73,14 @@ class PostsController extends Controller
     {
         $postId = $args['id'];
         $user = $this->container->get('auth_user');
-        if (!$user->posts()->where('id', '=', $postId )->exists() || !$this->getPostFromDb($postId || $this->post[0]['status'] !== 2)) {
+        if (
+            !$user->posts()->where('id', '=', $postId)->exists() ||
+            !$this->getPostFromDb($postId) ||
+            $this->post[0]['status'] === 2
+        ) {
             return $response->withHeader('Location', '/error');
         }
-        return Twig::fromRequest($request)->render($response,'postCreate.twig',['postData' => $this->post]);
+        return Twig::fromRequest($request)->render($response, 'postCreate.twig', ['postData' => $this->post]);
     }
 
     public function showPost(Request $request, Response $response, array $args)
@@ -88,7 +92,8 @@ class PostsController extends Controller
                 'post.twig',
                 [
                     'post' => $this->post[0]
-                ]);
+                ]
+            );
         }
 
         return Twig::fromRequest($request)->render(

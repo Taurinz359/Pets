@@ -50,7 +50,7 @@ class LoginPageTest extends TestCase
             ["ce3186f2076d58949b78858d244c3efe" => $cookie]
         );
         $respone = $this->app->handle($request);
-        $this->assertEquals(301,$respone->getStatusCode());
+        $this->assertEquals(301, $respone->getStatusCode());
     }
 
     public function test_post_login_route_have_cookie()
@@ -69,6 +69,6 @@ class LoginPageTest extends TestCase
             ["ce3186f2076d58949b78858d244c3efe" => $cookie]
         );
         $respone = $this->app->handle($request);
-        $this->assertEquals(301,$respone->getStatusCode());
+        $this->assertEquals(301, $respone->getStatusCode());
     }
 }

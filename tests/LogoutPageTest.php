@@ -23,11 +23,11 @@ class LogoutPageTest extends TestCase
             'GET',
             '/logout',
             ['HTTP_ACCEPT' => 'application/json'],
-            ["ce3186f2076d58949b78858d244c3efe" => $cookie]);
+            ["ce3186f2076d58949b78858d244c3efe" => $cookie]
+        );
         $response = $this->app->handle($request);
         $this->assertEquals('/', $response->getHeaders()['Location'][0]);
         $this->assertStringContainsStringIgnoringCase('1970', $response->getHeaders()['Set-Cookie'][0]);
-
     }
 
     public function test_logout_route_without_cookie()
@@ -39,5 +39,4 @@ class LogoutPageTest extends TestCase
         $response = $this->app->handle($request);
         $this->assertEquals(302, $response->getStatusCode());
     }
-
 }

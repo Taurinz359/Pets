@@ -94,12 +94,10 @@ class PostsCreateTest extends TestCase
             'content' => $faker->realtext(1000),
         ]);
         $response = $this->app->handle($request);
-        $postsCount = Post::all()->count();
-        $draft = Post::where('id', '=', '7')->get()->toArray()[0]['status'];
-
+        $lastRecordInDb = Post::latest('id')->first()->toArray()['status'];
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals(7, Post::all()->count());
-        $this->assertEquals(2, $draft);
+        $this->assertEquals(8, Post::all()->count());
+        $this->assertEquals(2, $lastRecordInDb);
     }
 
     public function test_post_posts_route_with_cookie_draft()
@@ -123,9 +121,32 @@ class PostsCreateTest extends TestCase
             'draft' => 'true'
         ]);
         $response = $this->app->handle($request);
-        $draft = Post::where('id', '=', '7')->get()->toArray()[0]['status'];
+        $lastRecordInDb = Post::latest('id')->first()->toArray()['status'];
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals(7, Post::all()->count());
-        $this->assertEquals(1, $draft);
+        $this->assertEquals(8, Post::all()->count());
+        $this->assertEquals(1, $lastRecordInDb);
+    }
+    public function test_post_posts_with_incorrect_data()
+    {
+        $faker = Factory::create();
+        $cookie = implode(
+            md5("bottle"),
+            [
+                $this->user->id,
+                $this->user->password
+            ]
+        );
+        $request = $this->createRequest(
+            'POST',
+            '/posts',
+            ['HTTP_ACCEPT' => 'application/json'],
+            ["ce3186f2076d58949b78858d244c3efe" => $cookie]
+        )->withParsedBody([
+            'name' => ',',
+            'content' => '123',
+            'draft' => 'true'
+        ]);
+        $response=$this->app->handle($request);
+        $this->assertStringContainsString('Needs more', (string) $response->getBody() );
     }
 }

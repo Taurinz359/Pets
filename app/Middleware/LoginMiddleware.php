@@ -16,17 +16,17 @@ class LoginMiddleware
     {
         $this->container = $container;
     }
-    public function __invoke(Request $request, RequestHandler $handler):Response
+    public function __invoke(Request $request, RequestHandler $handler): Response
     {
-        if($this->isLoginUser($request->getCookieParams())){
+        if ($this->isLoginUser($request->getCookieParams())) {
             $response = $handler->handle($request);
-            return $response->withStatus(301,'IsLogin')->withHeader('Location','/posts')->withHeader("Cache-Control", 'no-cache, no-store, must-revalidate')->withHeader('Pragma' , 'no-cache')->withHeader('Expires','0');
+            return $response->withStatus(301, 'IsLogin')->withHeader('Location', '/posts')->withHeader("Cache-Control", 'no-cache, no-store, must-revalidate')->withHeader('Pragma', 'no-cache')->withHeader('Expires', '0');
         }
         $response = $handler->handle($request);
-        return $response->withHeader("Cache-Control", 'no-cache, no-store, must-revalidate')->withHeader('Pragma' , 'no-cache')->withHeader('Expires','0');
+        return $response->withHeader("Cache-Control", 'no-cache, no-store, must-revalidate')->withHeader('Pragma', 'no-cache')->withHeader('Expires', '0');
     }
 
-    public function isLoginUser (array $requsetData)
+    public function isLoginUser(array $requsetData)
     {
         return !empty($requsetData[md5('TestToken')]);
     }

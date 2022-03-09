@@ -11,6 +11,6 @@ class ErrorPageTest extends TestCase
         $request = $this->createRequest('GET', '/error');
         $response = $this->app->handle($request);
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertStringContainsString('Error',(string)$response->getBody());
+        $this->assertStringContainsString('Error', (string)$response->getBody());
     }
 }

@@ -27,15 +27,17 @@ class PostEditTest extends TestCase
             [
                 $this->user->id,
                 $this->user->password
-            ]);
-        $request = $this->createRequest('GET',
+            ]
+        );
+        $request = $this->createRequest(
+            'GET',
             '/post/1/edit',
             ['HTTP_ACCEPT' => 'application/json'],
             ["ce3186f2076d58949b78858d244c3efe" => $cookie]
         );
         $response = $this->app->handle($request);
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals('/error' ,$response->getHeaders()['Location'][0]);
+        $this->assertEquals('/error', $response->getHeaders()['Location'][0]);
     }
 
     public function test_edit_post_with_cookie()
@@ -45,14 +47,15 @@ class PostEditTest extends TestCase
             [
                 $this->user->id,
                 $this->user->password
-            ]);
-        $request = $this->createRequest('GET',
+            ]
+        );
+        $request = $this->createRequest(
+            'GET',
             '/post/7/edit',
             ['HTTP_ACCEPT' => 'application/json'],
             ["ce3186f2076d58949b78858d244c3efe" => $cookie]
         );
         $response = $this->app->handle($request);
-
-        $this->assertEquals('/error' ,$response->getStatusCode());
+        $this->assertEquals('/error', $response->getHeaders()['Location'][0]);
     }
 }
