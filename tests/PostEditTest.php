@@ -2,8 +2,7 @@
 
 namespace Tests;
 
-use Faker\Factory;
-use Respect\Validation\Rules\Factor;
+use function DI\string;
 
 class PostEditTest extends TestCase
 {
@@ -37,5 +36,23 @@ class PostEditTest extends TestCase
         $response = $this->app->handle($request);
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('/error' ,$response->getHeaders()['Location'][0]);
+    }
+
+    public function test_edit_post_with_cookie()
+    {
+        $cookie = implode(
+            md5("bottle"),
+            [
+                $this->user->id,
+                $this->user->password
+            ]);
+        $request = $this->createRequest('GET',
+            '/post/7/edit',
+            ['HTTP_ACCEPT' => 'application/json'],
+            ["ce3186f2076d58949b78858d244c3efe" => $cookie]
+        );
+        $response = $this->app->handle($request);
+
+        $this->assertEquals('/error' ,$response->getStatusCode());
     }
 }

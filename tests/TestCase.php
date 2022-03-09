@@ -30,7 +30,6 @@ class TestCase extends phpUnit
 
     protected function refreshDatabase(): void
     {
-        exec('cd /app && vendor/bin/phinx rollback -e testing');
         exec("cd /app && vendor/bin/phinx migrate -e testing");
         exec("cd /app && vendor/bin/phinx seed:run -e testing");
         $this->user = User::find(6);

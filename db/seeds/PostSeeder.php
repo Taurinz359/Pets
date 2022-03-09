@@ -31,6 +31,12 @@ class PostSeeder extends AbstractSeed
                 'status' => $status
             ];
         }
+        $data[] = [
+            'user_id' => 6,
+            'name' => $faker->realText(10),
+            'content' => $faker->realText(4000),
+            'status' => 2
+        ];
 
         $this->table('posts')->insert($data)->save();
     }

@@ -73,7 +73,7 @@ class PostsController extends Controller
     {
         $postId = $args['id'];
         $user = $this->container->get('auth_user');
-        if (!$user->posts()->where('id', '=', $postId )->exists() || !$this->getPostFromDb($postId)) {
+        if (!$user->posts()->where('id', '=', $postId )->exists() || !$this->getPostFromDb($postId || $this->post[0]['status'] !== 2)) {
             return $response->withHeader('Location', '/error');
         }
         return Twig::fromRequest($request)->render($response,'postCreate.twig',['postData' => $this->post]);
