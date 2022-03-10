@@ -5,7 +5,6 @@ namespace App\Controllers;
 use App\Auth;
 use App\Models\Post;
 use App\Models\Post as PostsDb;
-use App\Models\User;
 use Psr\Container\ContainerInterface;
 use Respect\Validation\Validator as v;
 use Slim\Psr7\Request;
@@ -123,12 +122,23 @@ class PostsController extends Controller
 
     public function editPost(Request $request, Response $response,array $args)
     {
+        $requestData = $request->getParsedBody();
         $postId = $args['id'];
-        var_dump($postId);die;
-        //todo сверить юзера и айди пост
-
+        $authUser = $this->container->get('auth_user');
+        $postFromDb = $authUser->posts()->where('id', '=', $postId)->get()->toArray();
+        //todo сверить юзера и айди поста
+        if (empty($postFromDb) || empty($postFromDb) || $postFromDb[0]['status'] !== 1) {
+            return $response->withHeader('Location', '/error');
+        }
         //todo провалидировать пост
-
+        $this->validatePostData($request->getParsedBody());
+        if (!empty($this->validator->getErrors())) {
+            return Twig::fromRequest($request)->render($response, 'postCreate.twig',
+                [
+                    'editPostErrors' => $this->validator->getErrors(),
+                    'post' => $request->getParsedBody()
+                ]);
+        }
         //todo изменить пост
 
     }

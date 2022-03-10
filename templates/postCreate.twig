@@ -6,7 +6,7 @@
             <div class=" mb-3 container w-25">
                 <label for="exampleFormControlInput1" class="isform-label">Label</label>
                 <input type="text" name="name" value="{{ post['name'] }}" class="form-control
-                    {% if editPostErrors ['name'] %} {{ "is-invalid" }} {% endif %}" id="exampleFormControlInput1"
+                    {% if editPostErrors ['name'][0] %} {{ "is-invalid" }} {% endif %}" id="exampleFormControlInput1"
                        placeholder="My grateful label">
                 <div class="invalid-feedback">{{ editPostErrors['name'][0] }}</div>
             </div>
@@ -14,11 +14,11 @@
                 <div class="w-50 container">
                     <label for="exampleFormControlTextarea1" class="form-label">Content</label>
                     <textarea class="form-control
-                        {% if editPostErrors['content'] %} {{ "is-invalid" }} {% endif %}" name="content"
+                        {% if editPostErrors['content'][1] %} {{ "is-invalid" }} {% endif %}" name="content"
                               id="exampleFormControlTextarea1" rows="3"
                               placeholder="Blablabla..">{{ post['content'] }}
                     </textarea>
-                    <div class="invalid-feedback">{{ editPostErrors['content'][0] }}</div>
+                    <div class="invalid-feedback">{{ editPostErrors['content'][1] }}</div>
                     <div class="mt-5 d-grid gap-2 d-md-flex justify-content-md-end">
                         <input name="draft" value="true" type="checkbox" class="btn-check" id="btn-check-outlined"
                                autocomplete="off">

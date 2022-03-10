@@ -3,6 +3,7 @@
 namespace Tests;
 
 use App\Models\Post;
+use Faker\Factory;
 use function DI\string;
 
 class PostEditTest extends TestCase
@@ -128,6 +129,50 @@ class PostEditTest extends TestCase
         );
         $response = $this->app->handle($request);
         $this->assertStringContainsStringIgnoringCase('needs more',(string)$response->getBody());
+
+    }
+    public function test_put_edit_route_incorrect_id()
+    {
+        $cookie = implode(
+            md5("bottle"),
+            [
+                $this->user->id,
+                $this->user->password
+            ]
+        );
+        $request = $this->createRequest(
+            'PUT',
+            '/post/111',
+            ['HTTP_ACCEPT' => 'application/json'],
+            ["ce3186f2076d58949b78858d244c3efe" => $cookie]
+        );
+        $response = $this->app->handle($request);
+        $this->assertEquals('/error',$response->getHeaders()['Location'][0]);
+    }
+
+    public function test_edit_post()
+    {
+        $faker = Factory::create();
+        $cookie = implode(
+            md5("bottle"),
+            [
+                $this->user->id,
+                $this->user->password
+            ]
+        );
+        $request = $this->createRequest(
+            'PUT',
+            '/post/6',
+            ['HTTP_ACCEPT' => 'application/json'],
+            ["ce3186f2076d58949b78858d244c3efe" => $cookie]
+        )->withParsedBody([
+            'name' => $faker->realText(100, 5),
+            'content' => $faker->realtext(1000, 2),
+            'draft' => 'true'
+        ]);
+        $response = $this->app->handle($request);
+        $lastRecordInDb = Post::latest('id')->first()->toArray();
+        //todo написать тесты, которые проверят изменение поста.
 
     }
 }
