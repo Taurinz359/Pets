@@ -128,7 +128,7 @@ class PostEditTest extends TestCase
             ["ce3186f2076d58949b78858d244c3efe" => $cookie]
         );
         $response = $this->app->handle($request);
-        $this->assertStringContainsStringIgnoringCase('needs more',(string)$response->getBody());
+        $this->assertEquals('/error',$response->getHeaders()['Location'][0]);
 
     }
     public function test_put_edit_route_incorrect_id()
@@ -160,19 +160,20 @@ class PostEditTest extends TestCase
                 $this->user->password
             ]
         );
+        $postName = "This is test";
         $request = $this->createRequest(
             'PUT',
             '/post/6',
             ['HTTP_ACCEPT' => 'application/json'],
             ["ce3186f2076d58949b78858d244c3efe" => $cookie]
         )->withParsedBody([
-            'name' => $faker->realText(100, 5),
-            'content' => $faker->realtext(1000, 2),
+            'name' => $postName,
+            'content' => $faker->realtext(4000, 2),
             'draft' => 'true'
         ]);
         $response = $this->app->handle($request);
-        $lastRecordInDb = Post::latest('id')->first()->toArray();
+        $lastRecordInDb = Post::latest('id')->first()->toArray()['name'];
+        $this->assertEquals($postName,$lastRecordInDb);
         //todo написать тесты, которые проверят изменение поста.
-
     }
 }

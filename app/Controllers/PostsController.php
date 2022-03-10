@@ -45,15 +45,15 @@ class PostsController extends Controller
     {
         $postId = $args['id'];
         $authUser = $this->container->get('auth_user');
-        $postFromDb  = $authUser->Posts()->where('id','=',$postId)->get()->toArray();
-        if (empty($postFromDb)){
-            $response->withAddedHeader('Location','/error');
+        $postFromDb = $authUser->Posts()->where('id', '=', $postId)->get()->toArray();
+        if (empty($postFromDb)) {
+            $response->withAddedHeader('Location', '/error');
         }
-        $delete = $authUser->Posts()->where('id','=',$postId)->delete();
-        if ($delete !== 1 ){
-            $response->withAddedHeader('Location','/error');
+        $delete = $authUser->Posts()->where('id', '=', $postId)->delete();
+        if ($delete !== 1) {
+            $response->withAddedHeader('Location', '/error');
         }
-        return $response->withAddedHeader('Location','/home');
+        return $response->withAddedHeader('Location', '/home');
     }
 
     private function createPostInDb($data)
@@ -94,7 +94,7 @@ class PostsController extends Controller
         $postId = $args['id'];
         $user = $this->container->get('auth_user');
         $postFromDb = $user->posts()->where('id', '=', $postId)->get()->toArray();
-        if ( empty($postFromDb) || $postFromDb[0]['status'] !== 1) {
+        if (empty($postFromDb) || $postFromDb[0]['status'] !== 1) {
             return $response->withHeader('Location', '/error');
         }
 
@@ -120,14 +120,14 @@ class PostsController extends Controller
         );
     }
 
-    public function editPost(Request $request, Response $response,array $args)
+    public function editPost(Request $request, Response $response, array $args)
     {
         $requestData = $request->getParsedBody();
         $postId = $args['id'];
         $authUser = $this->container->get('auth_user');
         $postFromDb = $authUser->posts()->where('id', '=', $postId)->get()->toArray();
         //todo сверить юзера и айди поста
-        if (empty($postFromDb) || empty($postFromDb) || $postFromDb[0]['status'] !== 1) {
+        if (empty($postFromDb) || empty($requestData) || $postFromDb[0]['status'] !== 1) {
             return $response->withHeader('Location', '/error');
         }
         //todo провалидировать пост
@@ -140,6 +140,14 @@ class PostsController extends Controller
                 ]);
         }
         //todo изменить пост
+        $updatePost = Post::find($postId);
+        $updatePost->name = $requestData['name'];
+        $updatePost->content = $requestData['content'];
+        $updatePost->status = empty($data['draft']) ? PostsDb::STATUS_PUBLISHED : PostsDb::STATUS_DRAFT;
+        $updatePost->save();
+
+        //todo redirect in home
+        return $response->withAddedHeader('Location', '/home');
 
     }
 
