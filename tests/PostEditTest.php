@@ -98,4 +98,36 @@ class PostEditTest extends TestCase
         $lastPost = Post::where('id','=','1')->get()->toArray();
         $this->assertEquals(false,empty($lastPost));
     }
+
+    public function test_get_put_edit ()
+    {
+        $request = $this->createRequest(
+            'PUT',
+            '/post/1',
+            ['HTTP_ACCEPT' => 'application/json'],
+            ["ce3186f2076d58949b78858d244c3efe" => '']
+        );
+        $response = $this->app->handle($request);
+        $this->assertEquals('/error',$response->getHeaders()['Location'][0]);
+    }
+
+    public function test_put_edit_route()
+    {
+        $cookie = implode(
+            md5("bottle"),
+            [
+                $this->user->id,
+                $this->user->password
+            ]
+        );
+        $request = $this->createRequest(
+            'PUT',
+            '/post/6',
+            ['HTTP_ACCEPT' => 'application/json'],
+            ["ce3186f2076d58949b78858d244c3efe" => $cookie]
+        );
+        $response = $this->app->handle($request);
+        $this->assertStringContainsStringIgnoringCase('needs more',(string)$response->getBody());
+
+    }
 }

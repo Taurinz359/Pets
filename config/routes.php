@@ -26,9 +26,10 @@ return static function (App $app) {
 
     $app->get('/error', [ErrorController::class, 'showError']);
 
-    $app->post('/posts', [PostsController::class, 'validatePostsData'])->add(new AuthMiddleware($app->getContainer()));
+    $app->post('/posts', [PostsController::class, 'createPost'])->add(new AuthMiddleware($app->getContainer()));
     $app->post('/login', [LoginController::class, 'checkLogin'])->add(new LoginMiddleware($app->getContainer()));
     $app->post('/register', [RegisterController::class, 'checkValidate']);
 
-    $app->post('/post/{id}', [PostsController::class, 'deletePost'])->add(new AuthMiddleware($app->getContainer()));
+    $app->delete('/post/{id}', [PostsController::class, 'deletePost'])->add(new AuthMiddleware($app->getContainer()));
+    $app->put('/post/{id}', [PostsController::class,'editPost'])->add(new AuthMiddleware($app->getContainer()));
 };

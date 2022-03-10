@@ -19,14 +19,11 @@ class PostsController extends Controller
     private $post;
     protected $Auth;
 
-    public function validatePostsData(Request $request, Response $response): Response|\Slim\Psr7\Message|\Psr\Http\Message\ResponseInterface
+    public function createPost(Request $request, Response $response): Response|\Slim\Psr7\Message|\Psr\Http\Message\ResponseInterface
     {
         $requestData = $request->getParsedBody();
         if (!empty($requestData)) {
-            $this->validator->validate($requestData, [
-                'name' => v::notEmpty()->length(10, 100)->setTemplate('Needs more 10 characters'),
-                'content' => v::notEmpty()->length(100, 5000)->setTemplate('Need more 100 characters')
-            ]);
+            $this->validatePostData($requestData);
             $errors = $this->validator->getErrors();
             if (empty($errors)) {
                 $this->createPostInDb($requestData);
@@ -35,6 +32,14 @@ class PostsController extends Controller
             return Twig::fromRequest($request)->render($response, 'postCreate.twig', ['errors' => $errors]);
         }
         return $response->withHeader('Location', '/error')->withStatus(401);
+    }
+
+    public function validatePostData($requestData)
+    {
+        $this->validator->validate($requestData, [
+            'name' => v::notEmpty()->length(10, 100)->setTemplate('Needs more 10 characters'),
+            'content' => v::notEmpty()->length(100, 5000)->setTemplate('Need more 100 characters')
+        ]);
     }
 
     public function deletePost(Request $request, Response $response, array $args)
@@ -93,7 +98,8 @@ class PostsController extends Controller
         if ( empty($postFromDb) || $postFromDb[0]['status'] !== 1) {
             return $response->withHeader('Location', '/error');
         }
-        return Twig::fromRequest($request)->render($response, 'postCreate.twig', ['postData' => $this->post]);
+
+        return Twig::fromRequest($request)->render($response, 'postCreate.twig', ['post' => $postFromDb[0]]);
     }
 
     public function showPost(Request $request, Response $response, array $args)
@@ -113,6 +119,18 @@ class PostsController extends Controller
             $response,
             'error.twig'
         );
+    }
+
+    public function editPost(Request $request, Response $response,array $args)
+    {
+        $postId = $args['id'];
+        var_dump($postId);die;
+        //todo сверить юзера и айди пост
+
+        //todo провалидировать пост
+
+        //todo изменить пост
+
     }
 
     private function validatePostId(int $id, Request $request): bool

@@ -5,7 +5,7 @@ namespace Tests;
 use App\Models\Post;
 use Faker\Factory;
 
-class PostsCreateTest extends TestCase
+class PostsPageTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -149,4 +149,6 @@ class PostsCreateTest extends TestCase
         $response=$this->app->handle($request);
         $this->assertStringContainsString('Needs more', (string) $response->getBody() );
     }
+
+
 }

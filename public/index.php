@@ -27,4 +27,6 @@ $capsule->addConnection($container->get('db'));
 $capsule->setAsGlobal();
 $capsule->bootEloquent();
 
+//$app->addRoutingMiddleware();
+
 $app->run();
