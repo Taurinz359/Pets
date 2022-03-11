@@ -126,29 +126,26 @@ class PostsController extends Controller
         $postId = $args['id'];
         $authUser = $this->container->get('auth_user');
         $postFromDb = $authUser->posts()->where('id', '=', $postId)->get()->toArray();
-        //todo сверить юзера и айди поста
         if (empty($postFromDb) || empty($requestData) || $postFromDb[0]['status'] !== 1) {
             return $response->withHeader('Location', '/error');
         }
-        //todo провалидировать пост
         $this->validatePostData($request->getParsedBody());
         if (!empty($this->validator->getErrors())) {
-            return Twig::fromRequest($request)->render($response, 'postCreate.twig',
+            return Twig::fromRequest($request)->render(
+                $response,
+                'postCreate.twig',
                 [
                     'editPostErrors' => $this->validator->getErrors(),
-                    'post' => $request->getParsedBody()
-                ]);
+                    'post' => $requestData += ['id' => $args['id']]
+                ]
+            );
         }
-        //todo изменить пост
-        $updatePost = Post::find($postId);
-        $updatePost->name = $requestData['name'];
-        $updatePost->content = $requestData['content'];
-        $updatePost->status = empty($data['draft']) ? PostsDb::STATUS_PUBLISHED : PostsDb::STATUS_DRAFT;
-        $updatePost->save();
-
-        //todo redirect in home
+        Post::find($postId)->update([
+            'name' => $requestData['name'],
+            'content' => $requestData['content'],
+            'status' => empty($data['draft']) ? PostsDb::STATUS_PUBLISHED : PostsDb::STATUS_DRAFT
+        ]);
         return $response->withAddedHeader('Location', '/home');
-
     }
 
     private function validatePostId(int $id, Request $request): bool

@@ -4,6 +4,7 @@ namespace Tests;
 
 use App\Models\Post;
 use Faker\Factory;
+
 use function DI\string;
 
 class PostEditTest extends TestCase
@@ -77,8 +78,8 @@ class PostEditTest extends TestCase
             ["ce3186f2076d58949b78858d244c3efe" => $cookie]
         );
         $response = $this->app->handle($request);
-        $lastPost = Post::where('id','=','7')->get()->toArray();
-        $this->assertEquals(true,empty($lastPost));
+        $lastPost = Post::where('id', '=', '7')->get()->toArray();
+        $this->assertEquals(true, empty($lastPost));
     }
     public function test_delete_post_route_incorrect_id()
     {
@@ -96,11 +97,11 @@ class PostEditTest extends TestCase
             ["ce3186f2076d58949b78858d244c3efe" => $cookie]
         );
         $response = $this->app->handle($request);
-        $lastPost = Post::where('id','=','1')->get()->toArray();
-        $this->assertEquals(false,empty($lastPost));
+        $lastPost = Post::where('id', '=', '1')->get()->toArray();
+        $this->assertEquals(false, empty($lastPost));
     }
 
-    public function test_get_put_edit ()
+    public function test_get_put_edit()
     {
         $request = $this->createRequest(
             'PUT',
@@ -109,7 +110,7 @@ class PostEditTest extends TestCase
             ["ce3186f2076d58949b78858d244c3efe" => '']
         );
         $response = $this->app->handle($request);
-        $this->assertEquals('/error',$response->getHeaders()['Location'][0]);
+        $this->assertEquals('/error', $response->getHeaders()['Location'][0]);
     }
 
     public function test_put_edit_route()
@@ -128,8 +129,7 @@ class PostEditTest extends TestCase
             ["ce3186f2076d58949b78858d244c3efe" => $cookie]
         );
         $response = $this->app->handle($request);
-        $this->assertEquals('/error',$response->getHeaders()['Location'][0]);
-
+        $this->assertEquals('/error', $response->getHeaders()['Location'][0]);
     }
     public function test_put_edit_route_incorrect_id()
     {
@@ -147,7 +147,7 @@ class PostEditTest extends TestCase
             ["ce3186f2076d58949b78858d244c3efe" => $cookie]
         );
         $response = $this->app->handle($request);
-        $this->assertEquals('/error',$response->getHeaders()['Location'][0]);
+        $this->assertEquals('/error', $response->getHeaders()['Location'][0]);
     }
 
     public function test_edit_post()
@@ -168,12 +168,11 @@ class PostEditTest extends TestCase
             ["ce3186f2076d58949b78858d244c3efe" => $cookie]
         )->withParsedBody([
             'name' => $postName,
-            'content' => $faker->realtext(4000, 2),
+            'content' => $faker->realtext(mt_rand(100, 200)),
             'draft' => 'true'
         ]);
         $response = $this->app->handle($request);
-        $lastRecordInDb = Post::latest('id')->first()->toArray()['name'];
-        $this->assertEquals($postName,$lastRecordInDb);
-        //todo написать тесты, которые проверят изменение поста.
+        $lastRecordInDb = Post::where('id', 6)->get()->toArray()[0]['name'];
+        $this->assertEquals($postName, $lastRecordInDb);
     }
 }

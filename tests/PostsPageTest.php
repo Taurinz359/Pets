@@ -146,9 +146,7 @@ class PostsPageTest extends TestCase
             'content' => '123',
             'draft' => 'true'
         ]);
-        $response=$this->app->handle($request);
-        $this->assertStringContainsString('Needs more', (string) $response->getBody() );
+        $response = $this->app->handle($request);
+        $this->assertStringContainsString('Needs more', (string) $response->getBody());
     }
-
-
 }
