@@ -143,7 +143,7 @@ class PostsController extends Controller
         Post::find($postId)->update([
             'name' => $requestData['name'],
             'content' => $requestData['content'],
-            'status' => empty($data['draft']) ? PostsDb::STATUS_PUBLISHED : PostsDb::STATUS_DRAFT
+            'status' => empty($requestData['draft']) ? PostsDb::STATUS_PUBLISHED : PostsDb::STATUS_DRAFT
         ]);
         return $response->withAddedHeader('Location', '/home');
     }

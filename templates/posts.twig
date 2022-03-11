@@ -1,35 +1,23 @@
 {% extends 'layout.twig' %}
 {% block content %}
-    <div class="container w-50">
+    {#    <div class="container w-50"> #}
+    {#        <div class="accordion" id="accordionExample"> #}
+    <link rel="stylesheet" href="/css/posts.css"/>
+    {% for post in posts %}
+        <div class="container">
+            <div class="card">
+                <div class="box">
+                    <div class="content">
+                        <h2>{{ post['id'] }}</h2>
+                        <h3>{{ post['name'] }}</h3>
+                        <p>{{ post['content'] }}</p>
+                        <a href="/post/{{ post['id'] }}">Read More</a>
 
-        <div class="accordion" id="accordionExample">
-            {% for posts in posts %}
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#post{{ posts['id'] }}" aria-expanded="true"
-                                aria-controls="collapseOne">
-                            {{ posts['name'] }}
-                        </button>
-                    </h2>
-                    <div id="post{{ posts['id'] }}" class="accordion-collapse collapse
-                        {{ (posts['id'] == 1) ? 'show' }}
-                        " aria-labelledby="headingOne"
-                         data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            {{ posts['content'] }}
-                            <div class="d-flex flex-row-reverse bd-highlight">
-                                <div class="p-2 bd-highlight">
-                                    <form method="get">
-                                        <a href="post/{{ posts['id'] }}" type="button" class="btn btn-outline-success">Read
-                                            More</a>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
-            {% endfor %}
+            </div>
         </div>
-    </div>
+    {% endfor %}
+    {#        </div> #}
+    {#    </div> #}
 {% endblock %}

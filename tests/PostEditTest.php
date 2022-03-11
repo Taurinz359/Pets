@@ -5,6 +5,7 @@ namespace Tests;
 use App\Models\Post;
 use Faker\Factory;
 
+use Illuminate\Support\Str;
 use function DI\string;
 
 class PostEditTest extends TestCase
@@ -168,7 +169,7 @@ class PostEditTest extends TestCase
             ["ce3186f2076d58949b78858d244c3efe" => $cookie]
         )->withParsedBody([
             'name' => $postName,
-            'content' => $faker->realtext(mt_rand(100, 200)),
+            'content' => Str::random(101),
             'draft' => 'true'
         ]);
         $response = $this->app->handle($request);
