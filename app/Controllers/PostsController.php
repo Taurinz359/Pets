@@ -16,7 +16,6 @@ class PostsController extends Controller
     protected ContainerInterface $container;
     private array $postsFromDb;
     private $post;
-    protected $Auth;
 
     public function createPost(Request $request, Response $response): Response|\Slim\Psr7\Message|\Psr\Http\Message\ResponseInterface
     {
@@ -71,7 +70,8 @@ class PostsController extends Controller
 
     public function showCreateForm(Request $request, Response $response)
     {
-        return Twig::fromRequest($request)->render($response, 'postCreate.twig', []);
+        $auth = empty($this->auth)? null : 'true';
+        return Twig::fromRequest($request)->render($response, 'postCreate.twig', ['isValidate' => $auth ]);
     }
 
 
@@ -156,14 +156,13 @@ class PostsController extends Controller
         if ($this->post[0]['status'] !== Post::STATUS_DRAFT) {
             return true;
         }
-        $this->Auth = $this->container->get(Auth::class);
-        if (!$this->Auth->checkToken($request)) {
+        if (!$this->auth->checkToken($request)) {
             return false;
         }
 
-        $user = $this->container->get('auth_user');
 
-        if ($user->posts()->where('id', '=', $id)->exists()) {
+
+        if ($this->auth->posts()->where('id', '=', $id)->exists()) {
             return true;
         }
 

@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Models\User;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Views\Twig;
@@ -14,10 +13,14 @@ class HomeController extends Controller
         $user = $this->container->get('auth_user');
 //        var_dump($user->posts->toArray()); die;
         $posts = $user->posts->toArray();
+        $auth  = empty($this->auth)? null : 'true';
         return Twig::fromRequest($request)->render(
             $response,
             'home.twig',
-            ['posts' => $posts]
+            [
+                'posts' => $posts,
+                'isValidate' => $auth
+            ]
         );
     }
 }

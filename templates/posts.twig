@@ -1,11 +1,7 @@
 {% extends 'layout.twig' %}
 {% block content %}
     <div class="container w-50">
-        {% if isValidate %}
-            <div class="mb-3 d-grid gap-2 d-md-flex justify-content-md-end">
-                <a href="/posts/create" class="btn btn-outline-secondary">Write post</a>
-            </div>
-        {% endif %}
+
         <div class="accordion" id="accordionExample">
             {% for posts in posts %}
                 <div class="accordion-item">
