@@ -66,7 +66,6 @@ class RegisterController extends Controller
 
     private function deleteToken(\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Message\ResponseInterface $response)
     {
-        $this->auth = $this->container->get(Auth::class);
         if ($this->auth->checkToken($request, $response)) {
             $cookie = md5('TestToken') . '=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; Max-Age=0;';
             return $response->withHeader('Set-Cookie', $cookie);

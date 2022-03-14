@@ -13,13 +13,12 @@ class HomeController extends Controller
         $user = $this->container->get('auth_user');
 //        var_dump($user->posts->toArray()); die;
         $posts = $user->posts->toArray();
-        $auth  = empty($this->auth)? null : 'true';
         return Twig::fromRequest($request)->render(
             $response,
             'home.twig',
             [
                 'posts' => $posts,
-                'isValidate' => $auth
+                'isValidate' => !empty($this->auth)
             ]
         );
     }

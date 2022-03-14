@@ -27,7 +27,8 @@ class Validator
 
     public function getErrors()
     {
-        return $this->errors;
+        session_start();
+        $_SESSION['validateErrors'] = $this->errors;
     }
 
     public function hasFailed(): bool

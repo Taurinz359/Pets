@@ -22,12 +22,12 @@ class PostsController extends Controller
         $requestData = $request->getParsedBody();
         if (!empty($requestData)) {
             $this->validatePostData($requestData);
-            $errors = $this->validator->getErrors();
-            if (empty($errors)) {
+            $this->validator->getErrors();
+            if (empty($_SESSION['validateErrors'])) {
                 $this->createPostInDb($requestData);
                 return $response->withHeader('Location', '/posts');
             }
-            return Twig::fromRequest($request)->render($response, 'postCreate.twig', ['errors' => $errors]);
+            return $response->withHeader('Location', '/posts/create');
         }
         return $response->withHeader('Location', '/error')->withStatus(401);
     }
@@ -70,8 +70,13 @@ class PostsController extends Controller
 
     public function showCreateForm(Request $request, Response $response)
     {
-        $auth = empty($this->auth)? null : 'true';
-        return Twig::fromRequest($request)->render($response, 'postCreate.twig', ['isValidate' => $auth ]);
+        session_start();
+        $validateErrors = $_SESSION['validateErrors'];
+        session_destroy();
+        return Twig::fromRequest($request)->render($response, 'postCreate.twig', [
+            'isValidate' => !empty($this->auth),
+            'createPostsErrors' => $validateErrors
+        ]);
     }
 
 
@@ -97,8 +102,14 @@ class PostsController extends Controller
         if (empty($postFromDb) || $postFromDb[0]['status'] !== 1) {
             return $response->withHeader('Location', '/error');
         }
-
-        return Twig::fromRequest($request)->render($response, 'postCreate.twig', ['post' => $postFromDb[0]]);
+        session_start();
+        $validatorErrors = $_SESSION['validateErrors'];
+        session_destroy();
+        return Twig::fromRequest($request)->render($response, 'postCreate.twig', [
+            'post' => $postFromDb[0],
+            'isValidate' => !empty($this->auth),
+            'editPostErrors' => $validatorErrors
+        ]);
     }
 
     public function showPost(Request $request, Response $response, array $args)
@@ -130,15 +141,10 @@ class PostsController extends Controller
             return $response->withHeader('Location', '/error');
         }
         $this->validatePostData($request->getParsedBody());
-        if (!empty($this->validator->getErrors())) {
-            return Twig::fromRequest($request)->render(
-                $response,
-                'postCreate.twig',
-                [
-                    'editPostErrors' => $this->validator->getErrors(),
-                    'post' => $requestData += ['id' => $args['id']]
-                ]
-            );
+        $this->validator->getErrors();
+        if (!empty($_SESSION['validateErrors'])) {
+            //добавить сессию для возврата данных
+            return $response->withHeader('Location', "/post/$postId/edit");
         }
         Post::find($postId)->update([
             'name' => $requestData['name'],
@@ -160,9 +166,7 @@ class PostsController extends Controller
             return false;
         }
 
-
-
-        if ($this->auth->posts()->where('id', '=', $id)->exists()) {
+        if ($this->container->get('auth_user')->posts()->where('id', '=', $id)->exists()) {
             return true;
         }
 
