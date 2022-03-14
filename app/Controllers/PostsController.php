@@ -103,6 +103,7 @@ class PostsController extends Controller
             return $response->withHeader('Location', '/error');
         }
         session_start();
+        //todo добавить проверку изменения поста
         $validatorErrors = $_SESSION['validateErrors'];
         session_destroy();
         return Twig::fromRequest($request)->render($response, 'postCreate.twig', [
