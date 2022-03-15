@@ -103,13 +103,12 @@ class PostsController extends Controller
             return $response->withHeader('Location', '/error');
         }
         session_start();
-        //todo добавить проверку изменения поста
         $validatorErrors = $_SESSION['validateErrors'];
-        session_destroy();
+        $requestData = $_SESSION['requestData'];
         return Twig::fromRequest($request)->render($response, 'postCreate.twig', [
-            'post' => $postFromDb[0],
+            'post' => empty($requestData)? $postFromDb[0] : $requestData,
             'isValidate' => !empty($this->auth),
-            'editPostErrors' => $validatorErrors
+            'editPostErrors' => $validatorErrors,
         ]);
     }
 
@@ -145,6 +144,8 @@ class PostsController extends Controller
         $this->validator->getErrors();
         if (!empty($_SESSION['validateErrors'])) {
             //добавить сессию для возврата данных
+            session_start();
+            $_SESSION['requestData'] = $requestData += ['id' => $postId];
             return $response->withHeader('Location', "/post/$postId/edit");
         }
         Post::find($postId)->update([

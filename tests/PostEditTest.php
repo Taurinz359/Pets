@@ -153,6 +153,7 @@ class PostEditTest extends TestCase
 
     public function test_edit_post()
     {
+        session_start();
         $faker = Factory::create();
         $cookie = implode(
             md5("bottle"),

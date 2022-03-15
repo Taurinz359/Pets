@@ -14,7 +14,12 @@ class RegisterController extends Controller
 {
     public function showRegister(Request $request, Response $response): ResponseInterface
     {
-        return Twig::fromRequest($request)->render($response, 'register.twig');
+        session_start();
+        $validateErrors = $_SESSION['validateErrors'];
+        session_destroy();
+        return Twig::fromRequest($request)->render($response, 'register.twig',[
+            'errors' =>  $validateErrors
+        ]);
     }
 
     public function checkValidate(Request $request, Response $response): ResponseInterface
@@ -26,30 +31,25 @@ class RegisterController extends Controller
             'password' => v::notEmpty()->length(3, 30),
             'password-check' => v::notEmpty()->length(3, 30)->equals($pass)->setTemplate('В глаза долбишься?'),
         ]);
+        $this->validator->getErrors();
         return $this->getTemplate($request, $response);
     }
 
     protected function getTemplate(Request $request, Response $response): Response|\Slim\Psr7\Message|ResponseInterface
     {
-        if ($this->validator->getErrors()) {
-            return Twig::fromRequest($request)->render(
-                $response,
-                'register.twig',
-                ['errors' => $this->validator->getErrors()]
-            );
-        } elseif ($this->isUniqEmailInDb($request->getParsedBody())) {
-            return Twig::fromRequest($request)->render(
-                $response,
-                'register.twig',
-                ['errors' => ['email' => [0 => 'Такой Email уже сущетсвует']]]
-            );
+        if (!empty($_SESSION['validateErrors'])) {
+            return $response->withHeader('Location','/register');
+        } elseif ($this->isUniqEmail($request->getParsedBody())) {
+            session_start();
+            $_SESSION['validateErrors'] = ['email' => [0 =>'Email has been used']];
+            return $response->withHeader('Location', '/register');
         }
         $response = $this->deleteToken($request, $response);
         $this->registerUser($request->getParsedBody());
         return $response->withStatus(302)->withHeader('Location', '/login');
     }
 
-    private function isUniqEmailInDb($requestData): bool
+    private function isUniqEmail($requestData): bool
     {
         $userData = User::where('email', $requestData['email'])->first();
         return (!empty($userData));
